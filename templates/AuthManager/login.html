@@ -1,0 +1,13 @@
+{% from "render_field.html" import render_field %}
+{% extends "header.html" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('auth.hLogin') }}">
+    <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+        <p><input type="submit" value="Войти"></p>
+    </dl>
+</form>
+{% endblock %}
