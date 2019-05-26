@@ -6,10 +6,10 @@ from routes import index
 def create_header(nav, app):
     nav.register_element('navbar', Navbar(
         View('MEVO', 'index'),
-        View('Login', 'auth.hLogin'),
-        View('Register', 'auth.hRegister'),
-        Subgroup('Routes',
-            View('Reset Password', 'auth.hResetPW')
+        View('Войти', 'auth.hLogin'),
+        View('Зарегистрироваться', 'auth.hRegister'),
+        Subgroup('Роуты',
+            View('Сбросить пароль', 'auth.hResetPW')
     )))
 
     Bootstrap(app)

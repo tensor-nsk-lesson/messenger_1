@@ -5,8 +5,8 @@
 {% block content %}
 <form method="POST" action="{{ url_for('auth.hLogin') }}">
     <dl>
-    {{ render_field(form.username) }}
-    {{ render_field(form.password) }}
+        {{ render_field(form.login) }}
+        {{ render_field(form.password) }}
         <p><input type="submit" value="Войти"></p>
     </dl>
 </form>

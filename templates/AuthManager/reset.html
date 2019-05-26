@@ -5,7 +5,7 @@
 {% block content %}
 <form method="POST" action="{{ url_for('auth.hResetPW') }}">
     <dl>
-        {{ render_field(form.username) }}
+        {{ render_field(form.login) }}
         <p><input type="submit" value="Сбросить"></p>
     </dl>
 </form>
