@@ -12,12 +12,12 @@ from create_header import create_header
 create_header(Nav(app), app)
 
 #  Auth Manager
-from modules.AuthManager.app import auth_blueprint
-app.register_blueprint(auth_blueprint)
+from modules.AuthManager.app import auth__module
+app.register_blueprint(auth__module)
 
 # API
-from modules.api.app import api_blueprint
-app.register_blueprint(api_blueprint, url_prefix='/api')
+from modules.api.app import api_module
+app.register_blueprint(api_module, url_prefix='/api')
 
 
 if __name__ == '__main__':
