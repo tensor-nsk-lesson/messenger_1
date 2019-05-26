@@ -36,7 +36,7 @@ CREATE TABLE "Content" (
 
 CREATE TABLE "Dialog" (
 	"id" serial NOT NULL,
-	"name" serial NOT NULL,
+	"name" TEXT NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
 	CONSTRAINT Dialog_pk PRIMARY KEY ("id")
 ) WITH (
