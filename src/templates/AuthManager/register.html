@@ -1,11 +1,19 @@
 {% from "render_field.html" import render_field %}
 {% extends "header.html" %}
-{% block title %}{{title}}{% endblock %}
+{% block title %}MEVO | Регистрация{% endblock %}
+
+{% with messages = get_flashed_messages %}
+    {% if messages %}
+        {{ message }}
+    {% endif %}
+{% endwith %}
 
 {% block content %}
 <form method="POST" action="{{ url_for('auth.hRegister') }}">
     <dl>
-        {{ render_field(form.username) }}
+        {{ render_field(form.first_name) }}
+        {{ render_field(form.second_name) }}
+        {{ render_field(form.login) }}
         {{ render_field(form.password) }}
         {{ render_field(form.confirm_password) }}
         <p><input type="submit" value="Зарегистрироваться"></p>

@@ -1,11 +1,11 @@
 {% from "render_field.html" import render_field %}
 {% extends "header.html" %}
-{% block title %}{{title}}{% endblock %}
+{% block title %}MEVO | Сброс пароля{% endblock %}
 
 {% block content %}
 <form method="POST" action="{{ url_for('auth.hResetPW') }}">
     <dl>
-        {{ render_field(form.username) }}
+        {{ render_field(form.login) }}
         <p><input type="submit" value="Сбросить"></p>
     </dl>
 </form>
