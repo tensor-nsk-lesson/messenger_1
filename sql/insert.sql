@@ -1,5 +1,5 @@
 // Added user
-INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) VALUES ('Petor','Petrov', NOW(), NOW(), false, true, false);
+INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted, token) VALUES ('Petor','Petrov', NOW(), NOW(), false, true, false, '1234567890');
 	// Другим запросом //
 INSERT INTO authentications (user_id, login, password) VALUES (2, 'petrov1234', 'petrov1234');
 

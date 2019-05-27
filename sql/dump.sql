@@ -7,6 +7,7 @@ CREATE TABLE "users" (
 	"is_blocked" BOOLEAN NOT NULL,
 	"is_active" BOOLEAN NOT NULL,
 	"is_deleted" BOOLEAN NOT NULL,
+	"token" TEXT NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
