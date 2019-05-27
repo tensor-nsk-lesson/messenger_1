@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
-from db_handle import db_getProfileInfo, db_updateProfileInfo, db_getProfilesInfo
+from db_handle import db_getProfileInfo, db_updateProfileInfo, db_getProfilesInfo, db_addUser
 
 api_module = Blueprint('api', __name__)
+
 
 @api_module.route('/profile/<int:ID>', methods=['GET', 'PUT', 'DELETE'])
 def profile(ID):
@@ -19,3 +20,15 @@ def profile(ID):
 @api_module.route('/profiles')
 def profiles():
     return jsonify(db_getProfilesInfo())
+
+
+@api_module.route('/profile/create')
+def create_profile():
+    if request.method == 'POST':
+        db_addUser(request.get_json())
+        return jsonify({'status': 1})
+
+
+
+
+
