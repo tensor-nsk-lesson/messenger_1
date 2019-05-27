@@ -27,13 +27,13 @@ def db_addUser(data):
     sql_execute(sql, True)
 
 
-def db_delUser(ID, data):
+def db_delUser(ID, token):
     # TODO: Добавить запрос на удаление пользователя
     sql  = """
         UPDATE users 
         SET is_deleted = true 
         WHERE id = {ID};
-    """.format(**)
+    """.format(ID, token)
     sql_execute(sql, True)
 
 
