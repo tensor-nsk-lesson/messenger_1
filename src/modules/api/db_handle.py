@@ -8,6 +8,7 @@ def sql_execute(query, fetch):
 
     answer = None
     cursor.execute(query)
+    cursor.commit()
     try:
         answer = cursor.fetchall() if fetch else cursor.fetchone()
     except psycopg2.Error as err:
@@ -15,10 +16,8 @@ def sql_execute(query, fetch):
     finally:
         conn.close()
         cursor.close
-        if answer is None:
-            return jsonify({'status': 1})
-        else:
-            return jsonify(answer)
+        return jsonify({'status': 1}) if not answer else jsonify(answer)
+
 
 
 def db_addUser(data):
