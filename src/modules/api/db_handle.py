@@ -1,3 +1,4 @@
+from flask import jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -9,12 +10,15 @@ def sql_execute(query, fetch):
     cursor.execute(query)
     try:
         answer = cursor.fetchall() if fetch else cursor.fetchone()
-    except Exception as err:
-        return err
+    except psycopg2.Error as err:
+        return jsonify({'status': err})
     finally:
         conn.close()
         cursor.close
-        return answer
+        if answer is None:
+            return jsonify({'status': 1})
+        else:
+            return jsonify(answer)
 
 
 def db_addUser(data):

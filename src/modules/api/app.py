@@ -19,26 +19,24 @@ def profile(ID):
 
 @api_module.route('/profiles')
 def profiles():
-    return jsonify(db_getProfilesInfo())
+    return db_getProfilesInfo()
 
 
 @api_module.route('/profile/create')
 def create_profile():
     if request.method == 'POST':
-        db_addUser(request.get_json())
-        return jsonify({'status': 1})
+        return db_addUser(request.get_json())
 
 
 @api_module.route('/message/send/')
 def send_message():
     if request.method == 'PUT':
-        db_sendMessage(request.get_json())
-        return jsonify({'status': 1})
+        return db_sendMessage(request.get_json())
 
 
 @api_module.route('/messages/<int:dialog_id>')
 def get_message(dialog_id):
     if request.method == 'GET':
-        return jsonify(db_getMessage(dialog_id))
+        return db_getMessage(dialog_id)
 
 
