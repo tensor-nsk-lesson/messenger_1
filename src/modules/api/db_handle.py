@@ -22,21 +22,23 @@ def sql_execute(query, fetch):
 
 def db_addUser(data):
     sql="""
-        INSERT INTO "User" ("first_name","last_name") 
-        VALUES ({firstname},{secondname});
-        INSERT INTO "Authentication" ("login","password") 
-        VALUES ("{login}","{password}");
+        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) 
+        VALUES ({firstname}, {secondname}, NOW(), NOW(), false, true, false) RETURNING id;
     """.format(**data)
-    sql_execute(sql, True)
+    userid = sql_execute(sql, True)
+    sql = """
+        INSERT INTO authentications (user_id, login, password) 
+        VALUES (""" + userid + """, {login}, {password});
+    """.format(**data)
+    sql_execute(sql, True);
 
 
-def db_delUser(ID, token):
-    # TODO: Добавить запрос на удаление пользователя
+def db_delUser(ID):
     sql="""
         UPDATE users 
         SET is_deleted = true 
         WHERE id = {ID};
-    """.format(ID, token)
+    """.format(ID)
     sql_execute(sql, True)
 
 
