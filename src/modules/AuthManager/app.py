@@ -24,7 +24,7 @@ def hRegister():
 def hLogin():
     form = fLogin()
     if request.method == 'POST':
-        data = FormContainHandler(request.form.to_dict())
+        data = request.form.to_dict()
 
         data.update({'password': sha256(data['password'].encode())})  # Хешируем введённый пользователем пароль
         if db_isValidUser(data):

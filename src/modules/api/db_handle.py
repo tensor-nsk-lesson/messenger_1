@@ -18,7 +18,7 @@ def sql_execute(query, fetch):
 
 
 def db_addUser(data):
-    sql  = """
+    sql="""
         INSERT INTO "User" ("first_name","last_name") 
         VALUES ({firstname},{secondname});
         INSERT INTO "Authentication" ("login","password") 
@@ -29,7 +29,7 @@ def db_addUser(data):
 
 def db_delUser(ID, token):
     # TODO: Добавить запрос на удаление пользователя
-    sql  = """
+    sql="""
         UPDATE users 
         SET is_deleted = true 
         WHERE id = {ID};
@@ -38,7 +38,7 @@ def db_delUser(ID, token):
 
 
 def db_isValidUser(data):
-    sql = """
+    sql="""
         SELECT count(id) 
         FROM "Authentication" 
         WHERE "login"={login}};
@@ -47,7 +47,7 @@ def db_isValidUser(data):
 
 
 def db_getProfileInfo(ID):
-    sql = """
+    sql="""
         SELECT first_name, last_name, created_at, last_visit 
         FROM "User" 
         WHERE "id"={ID};
@@ -57,14 +57,14 @@ def db_getProfileInfo(ID):
 
 def db_updateProfileInfo(ID, data):
     if data['first_name']:
-        sql = """
+        sql="""
             UPDATE "User" 
             SET "first_name"={first_name} 
             WHERE "id"={ID};
         """.format(data['first_name'], ID)
 
     if data['last_name']:
-        sql = """
+        sql="""
             UPDATE "User" 
             SET "last_name"={last_name} 
             WHERE "id"={ID};
@@ -74,7 +74,7 @@ def db_updateProfileInfo(ID, data):
 
 
 def db_getProfilesInfo():
-    sql = """
+    sql="""
         SELECT * 
         FROM Users;
     """
@@ -82,10 +82,21 @@ def db_getProfilesInfo():
 
 
 def db_isValidData(data):
-    sql = """
+    sql="""
         SELECT count(password) 
         FROM "Authenticaton" 
         WHERE "login"={login} 
         AND "password"={password};
     """.format(**data)
     return sql_execute(sql, False)
+
+
+def db_sendMessage(data):
+    sql=""""
+          
+    """.format(**data)
+
+
+def db_getMessage(ID):
+    sql="""
+    """.format(ID)
