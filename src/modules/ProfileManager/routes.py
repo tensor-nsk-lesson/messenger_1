@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from api.users import db_addUser, db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
+from api.users import db_addUser, db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo, db_isProfileValid
 
 profile_module = Blueprint('profile', __name__)
 
@@ -23,7 +23,9 @@ def profiles():
 @profile_module.route('/profile/create')
 def create_profile():
     if request.method == 'POST':
-        return db_addUser(request.get_json())
+        data = request.from_json.to_dict()
+        if not db_isProfileValid(data):
+            return db_addUser(request.get_json())
 
 
 

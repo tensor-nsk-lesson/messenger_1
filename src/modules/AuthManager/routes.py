@@ -19,6 +19,7 @@ def hRegister():
     return redirect('messages')
 
 
+@auth_module.route('/', methods=['GET', 'POST'])
 @auth_module.route('/login', methods=['GET', 'POST'])
 def hLogin():
     r = RedisSession()

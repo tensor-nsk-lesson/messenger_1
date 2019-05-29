@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_nav import Nav
 
 app = Flask(__name__, static_url_path='')
 
@@ -15,9 +14,9 @@ app.register_blueprint(auth_module)
 from ProfileManager.routes import profile_module
 app.register_blueprint(profile_module)
 
-#  Messages Manager
-from MessagesManager.routes import messages_module
-app.register_blueprint(messages_module)
+# #  Messages Manager
+# from MessagesManager.routes import messages_module
+# app.register_blueprint(messages_module)
 
 
 if __name__ == '__main__':
