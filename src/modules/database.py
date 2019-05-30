@@ -8,7 +8,7 @@ def sql_execute(query, fetch):
 
     answer = None
     cursor.execute(query)
-    cursor.commit()
+    conn.commit()
     try:
         if fetch:
             answer = cursor.fetchall()

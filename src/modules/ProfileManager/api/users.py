@@ -2,28 +2,28 @@ from database import sql_execute
 
 def db_addUser(data):
     sql="""
-        INSERT INTO User (first_name, last_name) 
-        VALUES ({firstname},{secondname});
-        INSERT INTO Authentication (login, password) 
-        VALUES ({login},{password});
+        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) 
+        VALUES ('{first_name}','{second_name}', NOW(), NOW(), false, true, false) RETURNING id;
+        INSERT INTO authentications (user_id, login, password) 
+        VALUES (id, '{login}', '{password}');
     """.format(**data)
     sql_execute(sql, True)
 
 
-def db_delProfile(ID, token):
+def db_delProfile(ID):
     # TODO: Добавить запрос на удаление пользователя
     sql="""
         UPDATE users 
         SET is_deleted = true 
-        WHERE id = {ID} and token;
-    """.format(ID, token)
+        WHERE id = {ID};
+    """.format(ID)
     return sql_execute(sql, True)
 
 
 def db_isUserCreated(data):
     sql="""
         SELECT count(id) 
-        FROM Authentication 
+        FROM authentications 
         WHERE login={login}};
     """.format(**data)
     return sql_execute(sql, False) == 1
@@ -60,9 +60,9 @@ def db_getProfilesInfo():
 
 def db_isProfileValid(data):
     sql="""
-        SELECT count(password) 
-        FROM Authenticaton
-        WHERE login={login} 
-        AND password={password};
+        SELECT count(user_id) 
+        FROM authentications
+        WHERE (login='{login}' 
+        AND password='{password}');
     """.format(**data)
-    return sql_execute(sql, False)['status'] == 1
+    return sql_execute(sql, False)
