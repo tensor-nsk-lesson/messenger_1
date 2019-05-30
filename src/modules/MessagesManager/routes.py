@@ -14,6 +14,7 @@ def get_message(dialog_id):
     if request.method == 'GET':
         return db_getMessage(dialog_id)
 
+
 @messages_module.route('/messages')
 def get_message(dialog_id):
     if request.method == 'GET':

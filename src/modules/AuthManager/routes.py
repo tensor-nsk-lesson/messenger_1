@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect
-from api.users import db_isProfileValid, db_addUser, db_getProfileInfo
+from api.users import db_isProfileValid, db_addProfile, db_getProfileInfo
 from hashlib import sha256
 from SessionControl.app import initRedis_db
 import time
@@ -17,7 +17,7 @@ def hRegister():
         if not db_isProfileValid(data):
             r.set(db_getProfileInfo(data)) # На вход подаётся словарь с ID пользователя.
 
-    return db_addUser(data)
+    return db_addProfile(data)
 
 
 @auth_module.route('/', methods=['GET', 'POST'])
