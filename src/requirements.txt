@@ -1,5 +1,4 @@
 flask
-flask_bootstrap
-flask_nav
-wtforms
 psycopg2
+redis
+python_socketio

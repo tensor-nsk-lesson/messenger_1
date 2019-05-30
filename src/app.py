@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_nav import Nav
 
 app = Flask(__name__, static_url_path='')
 
@@ -7,17 +6,17 @@ app = Flask(__name__, static_url_path='')
 from config import CONFIGURATION
 app.config.from_object(CONFIGURATION)
 
-# Function for create navigation menu
-from create_header import create_header
-create_header(Nav(app), app)
-
 #  Auth Manager
-from modules.AuthManager.app import auth__module
-app.register_blueprint(auth__module)
+from AuthManager.routes import auth_module
+app.register_blueprint(auth_module)
 
-# API
-from modules.api.app import api_module
-app.register_blueprint(api_module, url_prefix='/api')
+#  Profile Manager
+from ProfileManager.routes import profile_module
+app.register_blueprint(profile_module)
+
+# #  Messages Manager
+# from MessagesManager.routes import messages_module
+# app.register_blueprint(messages_module)
 
 
 if __name__ == '__main__':
