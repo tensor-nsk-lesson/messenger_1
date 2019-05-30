@@ -27,7 +27,7 @@ def db_addUser(data):
     """.format(**data)
     userid = sql_execute(sql, True)
     sql = """
-        INSERT INTO authentications (user_id, login, password) 
+        INSERT INTO authentications (user_id, 'login', 'password') 
         VALUES (""" + userid + """, {login}, {password});
     """.format(**data)
     sql_execute(sql, True);
@@ -45,8 +45,8 @@ def db_delUser(ID):
 def db_isValidUser(data):
     sql="""
         SELECT count(id) 
-        FROM "Authentication" 
-        WHERE "login"={login}};
+        FROM authentication
+        WHERE 'login' ={login};
     """.format(**data)
     return sql_execute(sql, False)
 
@@ -54,8 +54,8 @@ def db_isValidUser(data):
 def db_getProfileInfo(ID):
     sql="""
         SELECT first_name, last_name, created_at, last_visit 
-        FROM "User" 
-        WHERE "id"={ID};
+        FROM users
+        WHERE id ={ID};
     """.format(ID)
     return sql_execute(sql, False)
 
@@ -63,16 +63,16 @@ def db_getProfileInfo(ID):
 def db_updateProfileInfo(ID, data):
     if data['first_name']:
         sql="""
-            UPDATE "User" 
-            SET "first_name"={first_name} 
-            WHERE "id"={ID};
+            UPDATE users 
+            SET first_name = {first_name} 
+            WHERE id = {ID};
         """.format(data['first_name'], ID)
 
     if data['last_name']:
         sql="""
-            UPDATE "User" 
-            SET "last_name"={last_name} 
-            WHERE "id"={ID};
+            UPDATE users 
+            SET last_name = {last_name} 
+            WHERE id = {ID};
         """.format(ID)
 
     sql_execute(sql, False)
@@ -80,8 +80,8 @@ def db_updateProfileInfo(ID, data):
 
 def db_getProfilesInfo():
     sql="""
-        SELECT * 
-        FROM Users;
+        SELECT first_name, last_name, created_at, last_visit
+        FROM users;
     """
     return sql_execute(sql, False)
 
@@ -89,9 +89,9 @@ def db_getProfilesInfo():
 def db_isValidData(data):
     sql="""
         SELECT count(password) 
-        FROM "Authenticaton" 
-        WHERE "login"={login} 
-        AND "password"={password};
+        FROM authenticaton 
+        WHERE 'login' = {login}
+        AND 'password' = {password};
     """.format(**data)
     return sql_execute(sql, False)
 
