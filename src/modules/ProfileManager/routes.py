@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
+from modules.db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
 
 from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
 import json
