@@ -1,4 +1,4 @@
 class CONFIGURATION:
     SECRET_KEY = 'uzE7lSw8Ch7X4aB81E22Z6Nh'
-
+    JSON_AS_ASCII = False
 

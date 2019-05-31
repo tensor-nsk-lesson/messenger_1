@@ -1,8 +1,7 @@
-from flask import jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-def sql_execute(query, fetch=True):
+def sql_execute(query, fetch_all=True):
     conn = psycopg2.connect(dbname='messenger_1', user='messenger_1', password='messenger_1', host='90.189.168.29')
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
@@ -10,16 +9,18 @@ def sql_execute(query, fetch=True):
     cursor.execute(query)
     conn.commit()
     try:
-        if fetch:
+        if fetch_all:
             answer = cursor.fetchall()
         else:
-            cursor.fetchone()
+            answer = cursor.fetchone()
     except psycopg2.Error as err:
-        return jsonify({'error': err})
+        return {'error': err}
     finally:
+        cursor.close()
         conn.close()
-        cursor.close
-        if not answer:
-            return jsonify({'status': 1})
-        else:
-            return jsonify(answer)
+        return answer
+        #     return {'status': 1}
+        # elif answer is None:
+        #     return {'status': 'Unknown'}
+        # else:
+        #     return answer

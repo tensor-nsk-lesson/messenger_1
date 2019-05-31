@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect
+from flask import Blueprint, request, redirect, jsonify
 from api.users import db_addProfile, db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo, db_isProfileValid
 import json
 
@@ -8,10 +8,10 @@ profile_module = Blueprint('profile', __name__)
 def profile(ID):
     data = json.loads(request.data)
     if request.method == 'GET':
-        return db_getProfileInfo(ID)
+        return jsonify(db_getProfileInfo(ID))
 
     elif request.method == 'PUT':
-        return db_updateProfileInfo(ID, data)
+        return jsonify(db_updateProfileInfo(ID, data))
 
     elif request.method == 'DELETE':
         return db_delProfile(ID, data)
@@ -19,15 +19,4 @@ def profile(ID):
 
 @profile_module.route('/profiles')
 def profiles():
-    return db_getProfilesInfo()
-
-
-@profile_module.route('/profile/create', methods=['GET', 'POST'])
-def create_profile():
-    if request.method == 'POST':
-        data = json.loads(request.data)
-        print(data)
-        if not db_isProfileValid(data):
-            db_addProfile(data)
-
-    return redirect('profiles')
+    return jsonify(db_getProfilesInfo())
