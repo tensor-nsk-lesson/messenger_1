@@ -1,9 +1,9 @@
-from flask import Blueprint, request, redirect, jsonify, make_response
-from api.db_methods import db_isAuthDataValid, db_addProfile, db_getProfileInfo, db_getUserID, db_setLastVisit
-from api.db_methods import db_delProfile, db_isProfileExists, db_isProfileBlocked
-from SessionControl.app import initRedis_db, generateSession
+from flask import Blueprint, request, redirect, jsonify
+from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getProfileInfo, db_getUserID, db_setLastVisit
+from modules.ProfileManager.api.db_methods import db_isProfileExists
+from modules.SessionControl.app import initRedis_db, generateSession
 from flask_expects_json import expects_json
-from json_schemas import login_schema, register_schema
+from modules.AuthManager.json_schemas import login_schema, register_schema
 from hashlib import sha256
 import json
 

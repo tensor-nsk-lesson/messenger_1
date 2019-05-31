@@ -120,15 +120,20 @@ def db_updateProfileInfo(ID, data):
 
             if data[key] == answer[key]: # Если введённое и из БД поля эквиваленты, то выкидываем ошибку.
                 rows.append(key)
-                if len(rows) == 2:
-                    return {'status': 0, 'message': 'Эквивалентные поля {} не были изменены'.format(rows)}
                 continue
 
-            sql='''
-                UPDATE users
-                SET {}='{}' 
-                WHERE id='{}';
-            '''.format(key, data[key], ID)
+            sql = '''
+                                            UPDATE users
+                                            SET {}='{}' 
+                                            WHERE id='{}';
+                                        '''.format(key, data[key], ID)
             sql_execute(sql, fetch_all=False)
-            return {'status': 1}
+
+    if not len(rows):
+        return {'status': 1}
+    elif len(rows) >= 1:
+        return {'status': 1, 'message': 'Эквивалентное поле {} не было изменено'.format(rows)}
+    else:
+        return {'status': 0, 'message': 'Эквивалентные поля {} не были изменены'.format(rows)}
+
 

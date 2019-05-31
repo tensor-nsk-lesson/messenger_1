@@ -1,4 +1,4 @@
-from modules.ProfileManager.api.db_methods import db_getProfileInfo
+from db_methods import db_getProfileInfo
 
 
 def isProfileBlocked(user_id):
