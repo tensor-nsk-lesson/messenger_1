@@ -1,9 +1,9 @@
-from flask import Blueprint, request, redirect, jsonify
-from api.users import db_isProfileValid, db_addProfile, db_getProfileInfo, db_getUserID
+from flask import Blueprint, request, redirect, jsonify, make_response
+from api.users import db_isProfileValid, db_addProfile, db_getProfileInfo, db_getUserID, db_setLastVisit
 from hashlib import sha256
-from SessionControl.app import initRedis_db
-import time
+from SessionControl.app import initRedis_db, generateSession
 import json
+
 
 auth_module = Blueprint('auth', __name__)
 
@@ -24,13 +24,21 @@ def hRegister():
 @auth_module.route('/login', methods=['GET', 'POST'])
 def hLogin():
     r = initRedis_db()
-    user_id = 0
     if request.method == 'POST':
-        data = json.loads(request.data)
-        user_id = db_getUserID(data)
-        if db_isProfileValid(data):  # На вход подаётся словарь с данными пользователя. Возвращается его ID
-            r.set(user_id, sha256(data['login'] + str(time.time())))
-    return jsonify(db_getProfileInfo(user_id))
+        try: # Пробуем перевести введёный словарь пользователя в json.
+            data = json.loads(request.data)
+            if not data:
+                return {'status': 0, 'message': 'Требуются логин и пароль для авторизации'}
+
+            data.update({'password': sha256(data['password'].encode()).hexdigest()})
+            user_id = db_getUserID(data)
+
+            if db_isProfileValid(data):  #
+                db_setLastVisit(user_id)
+                generateSession(user_id, r)
+                return jsonify(db_getProfileInfo(user_id))
+        except Exception as err: # Если не смогли, то ничего не делаем.
+            print(err)
 
 
 @auth_module.route('/logout')
