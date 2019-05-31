@@ -5,9 +5,11 @@ import redis
 import uuid
 import time
 
+
 def initRedis_db():
     r = redis.Redis(host='127.0.0.1',port=6379,db=0)
     return r
+
 
 def generateSession(user_id, r):
     salt = ''.join([chr(randint(97, 122)) for _ in range(32)])

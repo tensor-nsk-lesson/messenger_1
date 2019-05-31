@@ -7,11 +7,11 @@ from config import CONFIGURATION
 app.config.from_object(CONFIGURATION)
 
 #  Auth Manager
-from AuthManager.routes import auth_module
+from modules.AuthManager.routes import auth_module
 app.register_blueprint(auth_module)
 
 #  Profile Manager
-from ProfileManager.routes import profile_module
+from modules.ProfileManager.routes import profile_module
 app.register_blueprint(profile_module)
 
 # #  Messages Manager

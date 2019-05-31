@@ -1,5 +1,7 @@
-from flask import Blueprint, request, redirect, jsonify
-from api.users import db_addProfile, db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo, db_isProfileValid
+from flask import Blueprint, request, jsonify
+from modules.ProfileManager.api.db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
+
+from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
 import json
 
 profile_module = Blueprint('profile', __name__)
@@ -12,9 +14,18 @@ def profile(ID):
     else:
         data = json.loads(request.data)
         if request.method == 'PUT':
+            if isProfileDeleted(ID):
+                return jsonify({'status': 0, 'message': 'Невозможно изменить данные удалённого аккаунта'})
+
+            if isProfileBlocked(ID):
+                return jsonify({'status': 0, 'message': 'Невозможно изменить данные заблокированного'})
+
             return jsonify(db_updateProfileInfo(ID, data))
 
         elif request.method == 'DELETE':
+            if isProfileDeleted(ID):
+                return jsonify({'status': 0, 'message': 'Аккаунт уже удалён'})
+
             return db_delProfile(ID)
 
 

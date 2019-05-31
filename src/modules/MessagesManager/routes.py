@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from MessagesManager.api.messages import db_getMessage, db_sendMessage
+from modules.MessagesManager.api.messages import db_getMessage, db_sendMessage
 
 messages_module = Blueprint('messages', __name__)
 
