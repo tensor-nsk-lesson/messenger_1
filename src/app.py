@@ -7,7 +7,7 @@ from config import CONFIGURATION
 app.config.from_object(CONFIGURATION)
 
 #  Auth Manager
-from AuthManager.routes import auth_module
+from modules.AuthManager.routes import auth_module
 app.register_blueprint(auth_module)
 
 #  Profile Manager
