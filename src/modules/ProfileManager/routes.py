@@ -6,15 +6,16 @@ profile_module = Blueprint('profile', __name__)
 
 @profile_module.route('/profile/<int:ID>', methods=['GET', 'PUT', 'DELETE'])
 def profile(ID):
-    data = json.loads(request.data)
     if request.method == 'GET':
         return jsonify(db_getProfileInfo(ID))
 
-    elif request.method == 'PUT':
-        return jsonify(db_updateProfileInfo(ID, data))
+    else:
+        data = json.loads(request.data)
+        if request.method == 'PUT':
+            return jsonify(db_updateProfileInfo(ID, data))
 
-    elif request.method == 'DELETE':
-        return db_delProfile(ID, data)
+        elif request.method == 'DELETE':
+            return db_delProfile(ID)
 
 
 @profile_module.route('/profiles')

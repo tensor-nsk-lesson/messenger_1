@@ -2,6 +2,9 @@ from database import sql_execute
 from flask import jsonify
 
 def db_addProfile(data):
+    if not data:
+        return jsonify({'status': 0, 'message': 'Требуются логин и пароль для авторизации'})
+
     if not db_isProfileExists(data):
         sql="""
             INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) 
@@ -42,7 +45,7 @@ def db_isProfileExists(data):
     sql='''
         SELECT count(user_id)
         FROM authentications
-        where login='{login}';
+        WHERE login='{login}';
     '''.format(**data)
     users = sql_execute(sql, fetch_all=False)['count']
     return bool(users)
@@ -52,15 +55,14 @@ def db_setLastVisit(ID):
     sql='''
         UPDATE users
         SET last_visit = NOW()
-        where id='{}'
+        WHERE id='{}'
     '''.format(ID)
     sql_execute(sql, fetch_all=False)
 
 
-# TODO: Сделать ещё возвращение ID.
 def db_getProfileInfo(ID):
     sql='''
-        SELECT first_name, second_name, created_at, last_visit 
+        SELECT first_name, second_name, id, last_visit, is_deleted 
         FROM users
         WHERE id='{}';
     '''.format(ID)
@@ -71,28 +73,31 @@ def db_getUserID(data):
     sql='''
         SELECT user_id
         FROM authentications
-        where login='{login}';
+        WHERE login='{login}';
     '''.format(**data)
     user_id = sql_execute(sql, fetch_all=False)
     return user_id['user_id']
 
 
 def db_updateProfileInfo(ID, data):
-    sql = ''
-    for key in data, ('first_name', 'second_name'):
-        if data[key]:
-            sql='''
-                UPDATE users
-                SET {1}='{2}' 
-                WHERE id='{3}';
-            '''.format(key, data[key], ID)
-    return sql_execute(sql, fetch_all=False)
+    for key in data:
+        if key in ('first_name', 'second_name'):
+            if data[key]:
+                sql='''
+                    UPDATE users
+                    SET {}='{}' 
+                    WHERE id='{}';
+                '''.format(key, data[key], ID)
+                sql_execute(sql, fetch_all=False)
+                return {'status': 1}
+        else:
+            return {'status': 0, 'message': 'Неизвестное поле. Менять можно только fist_name/second_name'}
 
 
 def db_getProfilesInfo():
     sql='''
         SELECT first_name, second_name, id, last_visit, is_deleted 
-        FROM Users;
+        FROM users;
     '''
     return sql_execute(sql, fetch_all=True)
 
