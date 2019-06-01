@@ -2,8 +2,9 @@ from flask import Blueprint, request, redirect, jsonify
 from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getProfileInfo, db_getUserID, db_setLastVisit
 from modules.ProfileManager.api.db_methods import db_isProfileExists
 from modules.SessionControl.app import initRedis_db, generateSession
+from modules.json_validator import json_validator
 from flask_expects_json import expects_json
-from modules.AuthManager.json_schemas import login_schema, register_schema
+from json_schemas import login_schema, register_schema
 from hashlib import sha256
 import json
 
@@ -15,10 +16,12 @@ auth_module = Blueprint('auth', __name__)
 def hRegister():
     if request.method == 'POST':
         data = json.loads(request.data)
+        json_validator(data)
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
         if db_isProfileExists(data):
             return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже зарегистрирован'})
+
         return jsonify(db_addProfile(data))
 
 
@@ -31,6 +34,12 @@ def hLogin():
         data = json.loads(request.data)
         if not data:
             return jsonify({'status': 0, 'message': 'Требуются логин и пароль для авторизации'})
+
+        if not data['login']:
+            return jsonify({'status': 0, 'message': 'Требуется логин для авторизации'})
+
+        if not data['password']:
+            return jsonify({'status': 0, 'message': 'Требуется пароль для авторизации'})
 
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
@@ -51,8 +60,8 @@ def hLogin():
 def logout():
     data = json.loads(request.data)
     r = initRedis_db()
-    r.delete(db_getProfileInfo(data))
-    return redirect('index')
+    r.delete(db_getUserID(data))
+    return jsonify({'status': 1})
 
 
 @auth_module.route('/reset-password/', methods=['GET', 'POST'])

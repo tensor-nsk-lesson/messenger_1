@@ -87,6 +87,18 @@ def db_delProfile(ID, status=True):
     return sql_execute(sql, fetch_all=True)
 
 
+def db_FullDelProfile(ID):
+    # TODO: Добавить запрос на удаление пользователя
+    sql='''
+        DELETE FROM authentications
+        WHERE user_id='{}';
+        DELETE FROM users
+        WHERE id='{}';
+    '''.format(ID, ID)
+    sql_execute(sql, fetch_all=True)
+    return {'status': 1}
+
+
 def db_getProfileInfo(ID):
     sql='''
         SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
@@ -108,7 +120,7 @@ def db_updateProfileInfo(ID, data):
     rows = []
     for key in data:
         if not key in ('first_name', 'second_name'):
-            return {'status': 0, 'message': 'Неизвестное поле. Менять можно только fist_name/second_name'}
+            return {'status': 0, 'message': 'Неизвестное поле. Менять можно только first_name/second_name'}
 
         if data[key]:
             sql='''
@@ -123,10 +135,10 @@ def db_updateProfileInfo(ID, data):
                 continue
 
             sql = '''
-                                            UPDATE users
-                                            SET {}='{}' 
-                                            WHERE id='{}';
-                                        '''.format(key, data[key], ID)
+                UPDATE users
+                SET {}='{}' 
+                WHERE id='{}';
+            '''.format(key, data[key], ID)
             sql_execute(sql, fetch_all=False)
 
     if not len(rows):
