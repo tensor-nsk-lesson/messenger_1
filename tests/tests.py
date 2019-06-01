@@ -6,14 +6,14 @@ import random
 class TestProfile(unittest.TestCase):
     def test_add_user(self):
         for _ in range(6):
-            string = ''.join([chr(random.randint(33, 126)) for _ in range(9)])
+            string = ''.join([chr(random.randint(65, 90)) for _ in range(9)])
             data = {
                 'first_name': string,
                 'second_name': string,
                 'login': string,
                 'password': string,
-                'confirm_password': string
             }
+            print(data)
             resp = requests.post('http://127.0.0.1:5000/register', json=data)
             print(resp.text)
             response = json.loads(resp.text)
