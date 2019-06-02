@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from modules.ProfileManager.api.db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
-from modules.ProfileManager.api.db_methods import db_FullDelProfile
+from modules.ProfileManager.api.db_methods import db_FullDelProfile, db_isProfileExists
 from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
 import json
 
@@ -8,6 +8,9 @@ profile_module = Blueprint('profile', __name__)
 
 @profile_module.route('/profile/<int:ID>', methods=['GET', 'PUT', 'DELETE'])
 def profile(ID):
+    if not db_isProfileExists(ID):
+        return jsonify({'status': 1, 'message': 'Такого аккаунта не существует'})
+
     if request.method == 'GET':
         return jsonify(db_getProfileInfo(ID))
 

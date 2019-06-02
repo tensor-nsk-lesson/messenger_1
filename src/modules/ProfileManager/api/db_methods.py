@@ -2,10 +2,10 @@ from database import sql_execute
 
 ## DEVELOP METHODS
 def db_addProfile(data):
-    sql="""
+    sql='''
         INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) 
         VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false) RETURNING id;
-    """.format(**data)
+    '''.format(**data)
     user_id = sql_execute(sql, True)
     sql = """
         INSERT INTO authentications (user_id, login, password) 
@@ -19,18 +19,26 @@ def db_isAuthDataValid(data):
     sql='''
         SELECT user_id
         FROM authentications
-        WHERE (login='{login}' AND password='{password}');
+        WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
     return bool(answer['user_id'])
 
 
 def db_isProfileExists(data):
-    sql='''
-        SELECT count(user_id)
-        FROM authentications
-        WHERE login='{login}';
-    '''.format(**data)
+    sql = '''
+            SELECT count(login)
+            FROM authentications
+    '''
+    if type(data) == int:
+        sql += '''
+            WHERE user_id='%d'
+        ''' % data
+    elif type(data) == dict:
+        sql +='''
+            WHERE login='$(login)s';
+        ''' % data
+
     users = sql_execute(sql, fetch_all=False)['count']
     return bool(users)
 
@@ -39,8 +47,8 @@ def db_setLastVisit(ID):
     sql='''
         UPDATE users
         SET last_visit = NOW()
-        WHERE id='{}';
-    '''.format(ID)
+        WHERE id='%d';
+    ''' % ID
     sql_execute(sql, fetch_all=False)
 
 
@@ -52,9 +60,9 @@ def db_setLastVisit(ID):
 def db_blockProfile(ID, status=True):
     sql='''
         UPDATE users
-        SET is_blocked={}
-        WHERE id='{}';
-    '''.format(status, ID)
+        SET is_blocked='%s'
+        WHERE id='%d';
+    ''' % (status, ID)
     sql_execute(sql, fetch_all=False)
 
 
@@ -63,8 +71,8 @@ def db_getUserID(data):
     sql='''
         SELECT user_id
         FROM authentications
-        WHERE login='{login}';
-    '''.format(**data)
+        WHERE login='%(login)s';
+    ''' % data
     user_id = sql_execute(sql, fetch_all=False)
     return user_id['user_id']
 
@@ -81,9 +89,9 @@ def db_delProfile(ID, status=True):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
         UPDATE users 
-        SET is_deleted='{}'
-        WHERE id='{}';
-    '''.format(status, ID)
+        SET is_deleted='%s'
+        WHERE id='%d';
+    ''' % (status, ID)
     return sql_execute(sql, fetch_all=True)
 
 
@@ -91,10 +99,10 @@ def db_FullDelProfile(ID):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
         DELETE FROM authentications
-        WHERE user_id='{}';
+        WHERE user_id='%d';
         DELETE FROM users
-        WHERE id='{}';
-    '''.format(ID, ID)
+        WHERE id='%d';
+    ''' % (ID, ID)
     sql_execute(sql, fetch_all=True)
     return {'status': 1}
 
@@ -103,8 +111,8 @@ def db_getProfileInfo(ID):
     sql='''
         SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
         FROM users
-        WHERE id='{}';
-    '''.format(ID)
+        WHERE id='%d';
+    ''' % ID
     return sql_execute(sql, fetch_all=False)
 
 
@@ -126,8 +134,8 @@ def db_updateProfileInfo(ID, data):
             sql='''
                 SELECT first_name, second_name
                 FROM users
-                WHERE id='{}'
-            '''.format(ID)
+                WHERE id='%d'
+            ''' % ID
             answer = sql_execute(sql, fetch_all=False)
 
             if data[key] == answer[key]: # Если введённое и из БД поля эквиваленты, то выкидываем ошибку.
@@ -136,9 +144,9 @@ def db_updateProfileInfo(ID, data):
 
             sql = '''
                 UPDATE users
-                SET {}='{}' 
-                WHERE id='{}';
-            '''.format(key, data[key], ID)
+                SET %s='%s' 
+                WHERE id='%d';
+            ''' % (key, data[key], ID)
             sql_execute(sql, fetch_all=False)
 
     if not len(rows):
@@ -147,5 +155,4 @@ def db_updateProfileInfo(ID, data):
         return {'status': 1, 'message': 'Эквивалентное поле {} не было изменено'.format(rows)}
     else:
         return {'status': 0, 'message': 'Эквивалентные поля {} не были изменены'.format(rows)}
-
 
