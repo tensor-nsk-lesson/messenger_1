@@ -82,9 +82,6 @@ def db_delProfile(ID, status=True):
            "WHERE id=%d"
            ) % (status, ID)
     return sql_execute(sql)
-    ''' % (status, ID)
-    sql_execute(sql, fetch_all=True)
-    return {'status': 1}
 
 
 def db_FullDelProfile(ID):
