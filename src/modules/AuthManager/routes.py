@@ -27,13 +27,13 @@ def hRegister():
         if not data['login'].isalpha():
             return jsonify({'status': 0, 'message': 'Поле \'логин\' должно состоять только из букв формата [a-Z]'})
 
-        # if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name']:
-        #     return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
+        if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name']:
+            return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
-        # if db_isProfileExists(data):
-        #     return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже зарегистрирован'})
+        if db_isProfileExists(data):
+            return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже зарегистрирован'})
 
         return jsonify(db_addProfile(data))
 

@@ -5,7 +5,7 @@ import random
 
 class TestProfile(unittest.TestCase):
     def test_add_user(self):
-        for _ in range(6):
+        for _ in range(3):
             string = ''.join([chr(random.randint(65, 90)) for _ in range(9)])
             data = {
                 'first_name': string,
@@ -18,7 +18,6 @@ class TestProfile(unittest.TestCase):
             print(resp.text)
             response = json.loads(resp.text)
             self.assertEqual(resp.status_code, 200)
-            self.assertIsNotNone(resp.text)
             self.assertEqual(response['status'], 1)
             print('/register test_add_user: {}'.format(resp.text))
 
@@ -31,10 +30,11 @@ class TestProfile(unittest.TestCase):
         for user in users:
             resp = requests.get('http://127.0.0.1:5000/profile/{}'.format(user['id']))
             response = json.loads(resp.text)
+            print('/profile/{} get_user: {}'.format(user['id'], response))
             self.assertEqual(resp.status_code, 200)
             self.assertIsNotNone(resp.text)
             self.assertGreater(response['id'], 0)
-            print('/profiles/{} get_user: {}'.format(user['id'], resp.text))
+
 
     def test_c_login_user(self):
         resp = requests.get('http://127.0.0.1:5000/profiles')
@@ -42,16 +42,17 @@ class TestProfile(unittest.TestCase):
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)
         for user in users:
-            if user['id'] != 102:
+            if user['id'] != 191:
                 data = {
                     'login': user['first_name'],
                     'password': user['first_name'],
                 }
                 resp = requests.post('http://127.0.0.1:5000/login', json=data)
+                print('/login login_user: {}'.format(resp.text))
                 self.assertEqual(resp.status_code, 200)
                 self.assertGreater(user['id'], 0)
                 self.assertIsNotNone(resp.text)
-                print('/login login_user: {}'.format(resp.text))
+
 
                 data = {
                     'login': '',
@@ -70,7 +71,7 @@ class TestProfile(unittest.TestCase):
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)
         for user in users:
-            if user['id'] != 102:
+            if user['id'] != 191:
                 # Неизвестное поле. Менять можно только fist_name/second_name
                 data = {
                     string: string,
@@ -117,7 +118,7 @@ class TestProfile(unittest.TestCase):
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)
         for user in users:
-            if user['id'] != 102:
+            if user['id'] != 191:
                 resp = requests.delete('http://127.0.0.1:5000/profile/{}'.format(user['id']))
                 response = json.loads(resp.text)
                 self.assertEqual(resp.status_code, 200)
