@@ -73,7 +73,7 @@ CREATE TABLE "relationships" (
 
 
 ALTER TABLE "messages" ADD CONSTRAINT "messages_fk0" FOREIGN KEY ("dialog_id") REFERENCES "dialogs"("id");
-
+ALTER TABLE "messages" ADD CONSTRAINT "messages_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 
 ALTER TABLE "dialogUser" ADD CONSTRAINT "dialogUser_fk0" FOREIGN KEY ("dialog_id") REFERENCES "dialogs"("id");
 ALTER TABLE "dialogUser" ADD CONSTRAINT "dialogUser_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
