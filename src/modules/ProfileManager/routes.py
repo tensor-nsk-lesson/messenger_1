@@ -30,7 +30,7 @@ def profile(ID):
                 return jsonify({'status': 0, 'message': 'Аккаунт уже удалён'})
 
             #return db_delProfile(ID, status=True)
-            return jsonify(db_FullDelProfile(ID))
+            return jsonify(db_delProfile(ID))
 
 
 @profile_module.route('/profiles')

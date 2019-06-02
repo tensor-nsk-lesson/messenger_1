@@ -92,7 +92,8 @@ def db_delProfile(ID, status=True):
         SET is_deleted='%s'
         WHERE id='%d';
     ''' % (status, ID)
-    return sql_execute(sql, fetch_all=True)
+    sql_execute(sql, fetch_all=True)
+    return {'status': 1}
 
 
 def db_FullDelProfile(ID):
@@ -109,7 +110,7 @@ def db_FullDelProfile(ID):
 
 def db_getProfileInfo(ID):
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, created_at
         FROM users
         WHERE id='%d';
     ''' % ID
@@ -118,7 +119,7 @@ def db_getProfileInfo(ID):
 
 def db_getProfilesInfo():
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, created_at
         FROM users;
     '''
     return sql_execute(sql, fetch_all=True)
@@ -132,7 +133,7 @@ def db_updateProfileInfo(ID, data):
 
         if data[key]:
             sql='''
-                SELECT first_name, second_name
+                SELECT first_name, second_nam
                 FROM users
                 WHERE id='%d'
             ''' % ID
