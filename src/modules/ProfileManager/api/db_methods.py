@@ -16,7 +16,6 @@ def db_addProfile(data):
 
 
 def db_isAuthDataValid(data):
-    print(data)
     sql='''
         SELECT user_id
         FROM authentications
