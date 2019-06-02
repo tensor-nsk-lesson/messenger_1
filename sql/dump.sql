@@ -5,7 +5,7 @@ CREATE TABLE "users" (
 	"created_at" TIMESTAMP NOT NULL,
 	"last_visit" TIMESTAMP NOT NULL,
 	"is_blocked" BOOLEAN NOT NULL,
-	"is_active" BOOLEAN NOT NULL,
+	"is_online" BOOLEAN NOT NULL,
 	"is_deleted" BOOLEAN NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY ("id")
 ) WITH (
@@ -19,7 +19,7 @@ CREATE TABLE "messages" (
 	"dialog_id" integer NOT NULL,
 	"content" TEXT NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
-	"to_id" integer NOT NULL,
+	"user_id" integer NOT NULL,
 	"section_id" integer NOT NULL,
 	CONSTRAINT messages_pk PRIMARY KEY ("id")
 ) WITH (
@@ -42,7 +42,7 @@ CREATE TABLE "dialogs" (
 CREATE TABLE "dialogUser" (
 	"dialog_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
-	"permisson" integer DEFAULT NULL
+	"permission" integer DEFAULT NULL
 ) WITH (
   OIDS=FALSE
 );

@@ -4,7 +4,7 @@ from modules.ProfileManager.api.db_methods import db_isProfileExists
 from modules.SessionControl.app import initRedis_db, generateSession
 #from flask_expects_json import expects_json
 from hashlib import sha256
-from json_schemas import login_schema, register_schema
+from modules.json_schemas import login_schema, register_schema
 import jsonschema
 import json
 
