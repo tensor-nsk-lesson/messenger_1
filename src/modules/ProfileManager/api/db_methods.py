@@ -1,14 +1,15 @@
 from modules.database import sql_execute
 
+
 ## DEVELOP METHODS
 def db_addProfile(data):
     sql = ("INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted)\n"
-           "VALUES ('%s', '%s', NOW(), NOW(), false, true, false)\n"
+           "VALUES ('%(first_name)s', '%(second_name)s', NOW(), NOW(), false, true, false)\n"
            "RETURNING id;"
            ) % data
     user_id = sql_execute(sql, False)
     sql = ("INSERT INTO authentications (user_id, login, password)\n"
-           "VALUES (%d, '%s', '%s');"
+           "VALUES (%d, '%(login)s', '%(password)s');"
            ) % user_id[0]['id'], data
     sql_execute(sql, False)
     return {'status': 1}
@@ -17,7 +18,7 @@ def db_addProfile(data):
 def db_isAuthDataValid(data):
     sql = ("SELECT user_id\n"
            "FROM authentications\n"
-           "WHERE login='%s' AND password='%s';"
+           "WHERE login='%(login)s' AND password='%(password)s';"
            ) % data
     answer = sql_execute(sql, False)
     return bool(answer['user_id'])
@@ -48,7 +49,9 @@ def db_setLastVisit(ID):
 По дефолту стоит True, поэтому аргумент status можно не отправлять. 
 Если передать False, то разблокирует.
 """
-def db_blockProfile(ID, status = True):
+
+
+def db_blockProfile(ID, status=True):
     sql = ("UPDATE users\n"
            "SET is_blocked='%s'\n"
            "WHERE id='%d';"
@@ -71,7 +74,9 @@ def db_getUserID(data):
 По дефолту стоит True, поэтому аргумент status можно не отправлять. 
 Если передать False, то восстанавливает.
 """
-def db_delProfile(ID, status = True):
+
+
+def db_delProfile(ID, status=True):
     sql = ("UPDATE users\n"
            "SET is_deleted=%s\n"
            "WHERE id=%d"
@@ -101,7 +106,7 @@ def db_getProfileInfo(ID):
 def db_getProfilesInfo():
     sql = ("SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, is_online\n"
            "FROM users;"
-          )
+           )
     return sql_execute(sql)
 
 
@@ -118,7 +123,7 @@ def db_updateProfileInfo(ID, data):
                    ) % ID
             answer = sql_execute(sql, False)
 
-            if data[key] == answer[key]: # Если введённое и из БД поля эквиваленты, то выкидываем ошибку.
+            if data[key] == answer[key]:  # Если введённое и из БД поля эквиваленты, то выкидываем ошибку.
                 rows.append(key)
                 continue
 
@@ -134,4 +139,3 @@ def db_updateProfileInfo(ID, data):
         return {'status': 1, 'message': 'Эквивалентное поле {} не было изменено'.format(rows)}
     else:
         return {'status': 0, 'message': 'Эквивалентные поля {} не были изменены'.format(rows)}
-
