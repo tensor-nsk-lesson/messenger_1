@@ -1,13 +1,16 @@
-from flask import Blueprint, request, redirect, jsonify, abort
-from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getProfileInfo, db_getUserID, \
-    db_setLastVisit
+from flask import Blueprint, request, redirect, jsonify, make_response
+from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getProfileInfo, db_getUserID
+from modules.ProfileManager.api.db_methods import db_setLastVisit
 from modules.ProfileManager.api.db_methods import db_isProfileExists
-from modules.SessionControl.app import initRedis_db, generateSession
-# from flask_expects_json import expects_json
-from hashlib import sha256
+from modules.AuthManager.SessionControl.app import initRedis_db
+from modules.json_validator import json_validate
 from modules.json_schemas import login_schema, register_schema
-import jsonschema
+from hashlib import sha256
+from random import randint
+import uuid
 import json
+import re
+import time
 
 auth_module = Blueprint('auth', __name__)
 
@@ -15,17 +18,16 @@ auth_module = Blueprint('auth', __name__)
 @auth_module.route('/register', methods=['GET', 'POST'])
 def hRegister():
     if request.method == 'POST':
-        try:
-            data = json.loads(request.data)
-            jsonschema.validate(data, register_schema)
-        except (jsonschema.exceptions.ValidationError, json.decoder.JSONDecodeError):
-            return {'status': -1, 'message': 'Найдены ошибки в JSON\'е'}
+        data = json_validate(request.data, register_schema)
 
         if not data:
             return jsonify({'status': 0, 'message': 'Требуется запрос с JSON\'ом'})
 
-        if not data['login'].isalpha():
-            return jsonify({'status': 0, 'message': 'Поле \'логин\' должно состоять только из букв формата [a-Z]'})
+        if ''.join(re.findall(r'\w+', data['login'])) != data['login']:
+            return jsonify({'status': 0, 'message': 'Логин должно состоять только из букв и цифр'})
+
+        if ''.join(re.findall(r'\w+', data['password'])) != data['password']:
+            return jsonify({'status': 0, 'message': 'Пароль должно состоять только из букв и цифр'})
 
         if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
@@ -43,11 +45,7 @@ def hRegister():
 def hLogin():
     r = initRedis_db()
     if request.method == 'POST':
-        try:
-            data = json.loads(request.data)
-            jsonschema.validate(data, login_schema)
-        except (jsonschema.exceptions.ValidationError, json.decoder.JSONDecodeError):
-            return {'status': -1, 'message': 'Найдены ошибки в запросе'}
+        data = json_validate(request.data, login_schema)
 
         if not data:
             return jsonify({'status': 0, 'message': 'Требуется запрос с JSON\'ом'})
@@ -55,8 +53,11 @@ def hLogin():
         if not data['login'] or not data['password']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
-        if not data['login'].isalpha():
-            return jsonify({'status': 0, 'message': 'Поле \'логин\' должно состоять только из букв формата [a-Z]'})
+        if ''.join(re.findall(r'\w+', data['login'])) != data['login']:
+            return jsonify({'status': 0, 'message': 'Логин должно состоять только из букв и цифр'})
+
+        if ''.join(re.findall(r'\w+', data['password'])) != data['password']:
+            return jsonify({'status': 0, 'message': 'Пароль должно состоять только из букв и цифр'})
 
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
@@ -68,22 +69,23 @@ def hLogin():
             return jsonify({'status': 0, 'message': 'Аккаунт заблокирован'})
 
         db_setLastVisit(user_id)
-        generateSession(user_id, r)
-        return jsonify(db_getProfileInfo(user_id))
+
+        salt = ''.join([chr(randint(97, 122)) for _ in range(32)])
+        generate_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, str(user_id + time.time()) + salt))
+
+        #return jsonify(db_getProfileInfo(user_id))
+        r.set(generate_uuid, user_id)
+        response = make_response(redirect('/profile/{}'.format(user_id)))
+        response.set_cookie('SESSION', bytes(generate_uuid, 'utf-8'))
+        return response
 
 
-# TODO: Сделать валидацию JSON'а от пользователя
-@auth_module.route('/logout', methods=['GET', 'POST'])
-def logout():
-    try:
-        data = json.loads(request.data)
-        jsonschema.validate(data, login_schema)
-    except (jsonschema.exceptions.ValidationError, json.decoder.JSONDecodeError):
-        return {'status': -1, 'message': 'Найдены ошибки в запросе'}
-
-    r = initRedis_db()
-    r.delete(db_getUserID(data))
-    return jsonify({'status': 1})
+# # TODO: Сделать валидацию JSON'а от пользователя
+# @auth_module.route('/logout', methods=['GET', 'POST'])
+# def logout():
+#     r = initRedis_db()
+#     r.delete(db_getUserID(data))
+#     return jsonify({'status': 1})
 
 
 # TODO: Сделать валидацию JSON'а от пользователя
@@ -91,7 +93,7 @@ def logout():
 def hResetPW():
     r = initRedis_db()
     if request.method == 'POST':
-        data = json.loads(request.data)
-        r.delete(db_getUserID(data))
+        UUID = request.cookies.get('SESSION')
+        r.delete(db_getUserID(uuid))
         # data.update({'password': sha256(data['password'].encode())})  # Хешируем введённый пользователем пароль
         return redirect('index')

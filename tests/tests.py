@@ -22,7 +22,7 @@ class TestProfile(unittest.TestCase):
             print('/register test_add_user: {}'.format(resp.text))
 
     def test_b_get_user(self):
-        resp = requests.get('http://127.0.0.1:5000/profiles')
+        resp = requests.get('http://127.0.0.1:5000/profile/all')
         self.assertEqual(resp.status_code, 200)
         self.assertIsNotNone(resp.text)
         print('/profiles get_user: {}'.format(resp.text))
@@ -37,7 +37,7 @@ class TestProfile(unittest.TestCase):
 
 
     def test_c_login_user(self):
-        resp = requests.get('http://127.0.0.1:5000/profiles')
+        resp = requests.get('http://127.0.0.1:5000/profile/all')
         self.assertEqual(resp.status_code, 200)
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)
@@ -66,7 +66,7 @@ class TestProfile(unittest.TestCase):
 
     def test_d_update_user(self):
         string = ''.join([chr(random.randint(33, 126)) for _ in range(9)])
-        resp = requests.get('http://127.0.0.1:5000/profiles')
+        resp = requests.get('http://127.0.0.1:5000/profile/all')
         self.assertEqual(resp.status_code, 200)
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)
@@ -113,7 +113,7 @@ class TestProfile(unittest.TestCase):
 
 
     def test_e_del_user(self):
-        resp = requests.get('http://127.0.0.1:5000/profiles')
+        resp = requests.get('http://127.0.0.1:5000/profile/all')
         self.assertEqual(resp.status_code, 200)
         self.assertIsNotNone(resp.text)
         users = json.loads(resp.text)

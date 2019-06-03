@@ -2,11 +2,12 @@ from flask import Blueprint, request, jsonify
 from modules.ProfileManager.api.db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
 from modules.ProfileManager.api.db_methods import db_FullDelProfile, db_isProfileExists
 from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
+
 import json
 
 profile_module = Blueprint('profile', __name__)
 
-@profile_module.route('/profile/<int:ID>', methods=['GET', 'PUT', 'DELETE'])
+@profile_module.route('/<int:ID>', methods=['GET', 'PUT', 'DELETE'])
 def profile(ID):
     if not db_isProfileExists(ID):
         return jsonify({'status': 1, 'message': 'Такого аккаунта не существует'})
@@ -16,7 +17,12 @@ def profile(ID):
 
     else:
         if request.method == 'PUT':
-            data = json.loads(request.data)
+
+            try:
+                data = json.loads(request.data)
+            except Exception:
+                pass
+
             if isProfileDeleted(ID):
                 return jsonify({'status': 0, 'message': 'Невозможно изменить данные удалённого аккаунта'})
 
@@ -33,6 +39,6 @@ def profile(ID):
             return jsonify(db_FullDelProfile(ID))
 
 
-@profile_module.route('/profiles')
+@profile_module.route('/all')
 def profiles():
     return jsonify(db_getProfilesInfo())

@@ -18,3 +18,30 @@ register_schema = {
     },
     'required': ['login', 'password', 'first_name', 'second_name']
 }
+
+
+profile_update_schema = {
+    'type': 'object',
+    'properties': {
+        'first_name': {'type': 'string'},
+        'second_name': {'type': 'string'}
+    },
+    'required': ['first_name', 'second_name']
+}
+
+
+conference_create_schema = {
+    'type': 'object',
+    'properties': {
+        'name': {'type': 'string'},
+    },
+    'required': ['name']
+}
+
+conference_send_schema = {
+    'type': 'object',
+    'properties': {
+        'name': {'type': 'string'},
+    },
+    'required': ['name']
+}
