@@ -6,10 +6,10 @@ def db_addProfile(data):
         INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted) 
         VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false) RETURNING id;
     '''.format(**data)
-    user_id = sql_execute(sql, fetch_all=True)
+    user_id = sql_execute(sql, fetch_all=False)
     sql = """
         INSERT INTO authentications (user_id, login, password) 
-        VALUES ('{}', '{login}', '{password}');
+        VALUES ('{:d}', '{login}', '{password}');
     """.format(user_id[0]['id'], **data)
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
@@ -22,7 +22,6 @@ def db_isAuthDataValid(data):
         WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
-
     return bool(answer['user_id'])
 
 
@@ -30,9 +29,9 @@ def db_isProfileExists(data):
     sql = "SELECT count(login) FROM authentications "
 
     if type(data) == int:
-        sql += "WHERE user_id='%d';" % data
+        sql += "WHERE user_id='{:d}';".format(data)
     elif type(data) == dict:
-        sql += "WHERE login='%(login)s';" % data
+        sql += "WHERE login='{login}';".format(**data)
 
 
     users = sql_execute(sql, fetch_all=False)['count']
@@ -43,8 +42,8 @@ def db_setLastVisit(ID):
     sql='''
         UPDATE users
         SET last_visit = NOW()
-        WHERE id='%d';
-    ''' % ID
+        WHERE id='{:d}';
+    '''.format(ID)
     sql_execute(sql, fetch_all=False)
 
 
@@ -56,9 +55,9 @@ def db_setLastVisit(ID):
 def db_blockProfile(ID, status=True):
     sql='''
         UPDATE users
-        SET is_blocked='%s'
-        WHERE id='%d';
-    ''' % (status, ID)
+        SET is_blocked='{}'
+        WHERE id='{:d}';
+    '''.format(status, ID)
     sql_execute(sql, fetch_all=False)
 
 
@@ -67,8 +66,8 @@ def db_getUserID(data):
     sql='''
         SELECT user_id
         FROM authentications
-        WHERE login='%(login)s';
-    ''' % data
+        WHERE login='{login}';
+    '''.format(**data)
     user_id = sql_execute(sql, fetch_all=False)
     return user_id['user_id']
 
@@ -85,9 +84,9 @@ def db_delProfile(ID, status=True):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
         UPDATE users 
-        SET is_deleted='%s'
-        WHERE id='%d';
-    ''' % (status, ID)
+        SET is_deleted='{}'
+        WHERE id='{:d}';
+    '''.format(status, ID)
     return sql_execute(sql, fetch_all=True)
 
 
@@ -95,10 +94,10 @@ def db_FullDelProfile(ID):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
         DELETE FROM authentications
-        WHERE user_id='%d';
+        WHERE user_id='{:d}';
         DELETE FROM users
-        WHERE id='%d';
-    ''' % (ID, ID)
+        WHERE id='{:d}';
+    '''.format(ID, ID)
     sql_execute(sql, fetch_all=True)
     return {'status': 1}
 
@@ -107,8 +106,8 @@ def db_getProfileInfo(ID):
     sql='''
         SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
         FROM users
-        WHERE id='%d';
-    ''' % ID
+        WHERE id='{:d}';
+    '''.format(ID)
     return sql_execute(sql, fetch_all=False)
 
 
@@ -130,8 +129,8 @@ def db_updateProfileInfo(ID, data):
             sql='''
                 SELECT first_name, second_name
                 FROM users
-                WHERE id='%d'
-            ''' % ID
+                WHERE id='{:d}'
+            '''.format(ID)
             answer = sql_execute(sql, fetch_all=False)
 
             if data[key] == answer[key]: # Если введённое и из БД поля эквиваленты, то выкидываем ошибку.
@@ -140,9 +139,9 @@ def db_updateProfileInfo(ID, data):
 
             sql = '''
                 UPDATE users
-                SET %s='%s' 
-                WHERE id='%d';
-            ''' % (key, data[key], ID)
+                SET {}='{}' 
+                WHERE id='{:d}';
+            '''.format(key, data[key], ID)
             sql_execute(sql, fetch_all=False)
 
     if not len(rows):

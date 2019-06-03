@@ -19,8 +19,3 @@ def sql_execute(query, fetch_all=True):
         cursor.close()
         conn.close()
         return answer
-        #     return {'status': 1}
-        # elif answer is None:
-        #     return {'status': 'Unknown'}
-        # else:
-        #     return answer
