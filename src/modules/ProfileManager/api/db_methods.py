@@ -6,7 +6,7 @@ def db_addProfile(data):
         INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted) 
         VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false) RETURNING id;
     '''.format(**data)
-    user_id = sql_execute(sql, fetch_all=False)
+    user_id = sql_execute(sql, fetch_all=True)
     sql = """
         INSERT INTO authentications (user_id, login, password) 
         VALUES ('{:d}', '{login}', '{password}');
@@ -16,13 +16,16 @@ def db_addProfile(data):
 
 
 def db_isAuthDataValid(data):
+    print(data)
     sql='''
         SELECT user_id
         FROM authentications
         WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
-    return bool(answer['user_id'])
+    return True if answer is not None else False
+
+    #return bool(answer['user_id'])
 
 
 def db_isProfileExists(data):
