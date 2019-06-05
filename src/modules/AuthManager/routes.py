@@ -53,11 +53,11 @@ def hLogin():
         if not data['login'] or not data['password']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
-        if ''.join(re.findall(r'\w+', data['login'])) != data['login']:
-            return jsonify({'status': 0, 'message': 'Логин должно состоять только из букв и цифр'})
-
-        if ''.join(re.findall(r'\w+', data['password'])) != data['password']:
-            return jsonify({'status': 0, 'message': 'Пароль должно состоять только из букв и цифр'})
+        # if ''.join(re.findall(r'\w+', data['login'])) != data['login']:
+        #     return jsonify({'status': 0, 'message': 'Логин должно состоять только из букв и цифр'})
+        #
+        # if ''.join(re.findall(r'\w+', data['password'])) != data['password']:
+        #     return jsonify({'status': 0, 'message': 'Пароль должно состоять только из букв и цифр'})
 
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
