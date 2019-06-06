@@ -1,0 +1,103 @@
+html{
+	width: 100%;
+	max-width: 100%;
+	overflow-x: hidden
+}
+body{
+	width: 100%;
+	max-width: 100%;
+	background-color: silver;
+	overflow-x: hidden;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover
+}
+.header{
+	background-color: #823CE5;
+	position: absolute;
+	margin: -8px 0px 0px -8px;
+	width: 100%;
+	height: 11%;
+}
+table{
+	table-layout: fixed;
+}
+td{
+	width: 15%;
+}
+H2{
+	margin-left: -670px;
+	color: white;
+	text-transform: uppercase;
+}
+
+img{
+	height: 40%;
+	margin-left: 12px;
+}
+H1{
+	font-size: 40px;
+	color: white;
+	margin-right: 1050px;
+	margin-top: 7px;
+}
+p{
+	font-size: 10px;
+	color: white;
+	margin-top: -35px;
+	margin-left: 8px;
+}
+a{
+	color: white;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+form{
+	margin-top: 20%;
+	margin-left: 38%;
+}
+input{
+	border-radius: 9px;
+	border: 2px solid white;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	-khtml-border-radius: 9px;
+	background-color: #823CE5;
+	margin-bottom: 5px;
+	height: 39px;
+	width: 330px;
+	padding: 5px;
+	color: white;
+	outline: none;
+}
+body ::-webkit-input-placeholder{
+	color: white;
+}
+body ::-moz-placeholder{
+	color: white;
+}
+body :-moz-placeholder{
+	color: white;
+}
+body :-ms-input-placeholder{
+	color: white;
+}
+body button{
+	background-color: #823CE5;
+	border: none;
+	border: 2px solid white;
+	border-radius: 9px;
+	height: 37px;
+	width: 117px;
+	font-size: 17px;
+	color: white;
+	margin-left: 225px;
+	outline: none;
+}
+a{
+	margin-right: 62px;
+}
+a.auth{
+	margin-left: -20px;
+}
