@@ -34,9 +34,6 @@ def hRegister():
 
         data.update({'password': sha256(data['password'].encode()).hexdigest()})
 
-        if db_isProfileExists(data):
-            return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже зарегистрирован'})
-
         return jsonify(db_addProfile(data))
 
 
