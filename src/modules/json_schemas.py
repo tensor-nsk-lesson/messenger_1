@@ -11,10 +11,10 @@ login_schema = {
 register_schema = {
     'type': 'object',
     'properties': {
-        'login': {'type': 'string'},
-        'password': {'type': 'string'},
-        'first_name': {'type': 'string'},
-        'second_name': {'type': 'string'}
+        'login': {'type': 'string', 'pattern': '\w+'},
+        'password': {'type': 'string', 'pattern': '\w+'},
+        'first_name': {'type': 'string', 'pattern': '\w+'},
+        'second_name': {'type': 'string', 'pattern': '\w+'}
     },
     'required': ['login', 'password', 'first_name', 'second_name']
 }

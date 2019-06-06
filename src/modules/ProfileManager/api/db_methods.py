@@ -32,9 +32,9 @@ def db_isProfileExists(data):
     sql = "SELECT count(login) FROM authentications "
 
     if type(data) == int:
-        sql += "WHERE user_id='{:d}';".format(data)
+        sql += " WHERE user_id='{:d}';".format(data)
     elif type(data) == dict:
-        sql += "WHERE login='{login}';".format(**data)
+        sql += " WHERE login='{login}';".format(**data)
 
 
     users = sql_execute(sql, fetch_all=False)['count']

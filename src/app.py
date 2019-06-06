@@ -15,7 +15,7 @@ from modules.ProfileManager.routes import profile_module
 app.register_blueprint(profile_module, url_prefix='/profile')
 
 #  Messages Manager
-from MessagesManager.routes import messages_module
+from modules.MessagesManager.routes import messages_module
 app.register_blueprint(messages_module, url_prefix='/chat')
 
 
