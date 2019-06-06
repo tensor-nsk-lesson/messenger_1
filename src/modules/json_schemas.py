@@ -1,8 +1,8 @@
 login_schema = {
     'type': 'object',
     'properties': {
-        'login': {'type': 'string'},
-        'password': {'type': 'string'}
+        'login': {'type': 'string', 'pattern': '\w+'},
+        'password': {'type': 'string', 'pattern': '\w+'}
     },
     'required': ['login', 'password']
 }
@@ -23,8 +23,8 @@ register_schema = {
 profile_update_schema = {
     'type': 'object',
     'properties': {
-        'first_name': {'type': 'string'},
-        'second_name': {'type': 'string'}
+        'first_name': {'type': 'string', 'pattern': '\w+'},
+        'second_name': {'type': 'string', 'pattern': '\w+'}
     },
     'required': ['first_name', 'second_name']
 }
