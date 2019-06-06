@@ -1,4 +1,4 @@
-from database import sql_execute
+from modules.database import sql_execute
 
 ## DEVELOP METHODS
 def db_addProfile(data):
@@ -8,7 +8,7 @@ def db_addProfile(data):
     '''.format(**data)
     user_id = sql_execute(sql, fetch_all=True)
     sql = """
-        INSERT INTO authentications (user_id, login, password) 
+        INSERT INTO auth (user_id, login, password) 
         VALUES ('{:d}', '{login}', '{password}');
     """.format(user_id[0]['id'], **data)
     sql_execute(sql, fetch_all=False)
@@ -19,7 +19,7 @@ def db_isAuthDataValid(data):
     print(data)
     sql='''
         SELECT user_id
-        FROM authentications
+        FROM auth
         WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
@@ -29,7 +29,7 @@ def db_isAuthDataValid(data):
 
 
 def db_isProfileExists(data):
-    sql = "SELECT count(login) FROM authentications "
+    sql = "SELECT count(login) FROM auth "
 
     if type(data) == int:
         sql += " WHERE user_id='{:d}';".format(data)
@@ -68,7 +68,7 @@ def db_blockProfile(ID, status=True):
 def db_getUserID(data):
     sql='''
         SELECT user_id
-        FROM authentications
+        FROM auth
         WHERE login='{login}';
     '''.format(**data)
     user_id = sql_execute(sql, fetch_all=False)
@@ -96,7 +96,7 @@ def db_delProfile(ID, status=True):
 def db_FullDelProfile(ID):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
-        DELETE FROM authentications
+        DELETE FROM auth
         WHERE user_id='{:d}';
         DELETE FROM users
         WHERE id='{:d}';
