@@ -1,8 +1,8 @@
 login_schema = {
     'type': 'object',
     'properties': {
-        'login': {'type': 'string', 'pattern': '\w+'},
-        'password': {'type': 'string', 'pattern': '\w+'}
+        'login': {'type': 'string', 'pattern': '^\w+$'},
+        'password': {'type': 'string', 'pattern': '^\w+$'}
     },
     'required': ['login', 'password']
 }
@@ -11,10 +11,10 @@ login_schema = {
 register_schema = {
     'type': 'object',
     'properties': {
-        'login': {'type': 'string', 'pattern': '\w+'},
-        'password': {'type': 'string', 'pattern': '\w+'},
-        'first_name': {'type': 'string', 'pattern': '\w+'},
-        'second_name': {'type': 'string', 'pattern': '\w+'}
+        'login': {'type': 'string', 'pattern': '^\w+$'},
+        'password': {'type': 'string', 'pattern': '^\w+$'},
+        'first_name': {'type': 'string', 'pattern': '^\w+$'},
+        'second_name': {'type': 'string', 'pattern': '^\w+$'}
     },
     'required': ['login', 'password', 'first_name', 'second_name']
 }
@@ -23,8 +23,8 @@ register_schema = {
 profile_update_schema = {
     'type': 'object',
     'properties': {
-        'first_name': {'type': 'string', 'pattern': '\w+'},
-        'second_name': {'type': 'string', 'pattern': '\w+'}
+        'first_name': {'type': 'string', 'pattern': '^\w+$'},
+        'second_name': {'type': 'string', 'pattern': '^\w+$'}
     },
     'required': ['first_name', 'second_name']
 }
@@ -33,7 +33,7 @@ profile_update_schema = {
 conference_create_schema = {
     'type': 'object',
     'properties': {
-        'name': {'type': 'string'},
+        'name': {'type': 'string', 'pattern': '^\w+$'},
     },
     'required': ['name']
 }
@@ -41,7 +41,7 @@ conference_create_schema = {
 conference_send_schema = {
     'type': 'object',
     'properties': {
-        'name': {'type': 'string'},
+        'name': {'type': 'string', 'pattern': '^\w+$'},
     },
     'required': ['name']
 }

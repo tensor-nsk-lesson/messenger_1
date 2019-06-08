@@ -14,8 +14,14 @@ def sql_execute(query, fetch_all):
         else:
             answer = cursor.fetchone()
     except psycopg2.Error as err:
-        print(err)
-        return {'status': 0, 'message': 'Error in database'}
+        '''
+            Попытается зафетчить, если будет такая возможность. 
+            TRUE - вернёт answer
+            FALSE - скажет, что нечего возвращать
+        '''
+        #print(err)
+        pass
+
     finally:
         cursor.close()
         conn.close()

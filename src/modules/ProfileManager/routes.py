@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from modules.ProfileManager.api.db_methods import db_delProfile, db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
 from modules.ProfileManager.api.db_methods import db_FullDelProfile, db_isProfileExists
 from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
@@ -21,11 +21,14 @@ def profile(ID):
 
             data = json_validate(request.data, profile_update_schema)
 
+            if data is None:
+                abort(400)
+
             if isProfileDeleted(ID):
                 return jsonify({'status': 0, 'message': 'Невозможно изменить данные удалённого аккаунта'})
 
             if isProfileBlocked(ID):
-                return jsonify({'status': 0, 'message': 'Невозможно изменить данные заблокированного'})
+                return jsonify({'status': 0, 'message': 'Невозможно изменить данные заблокированного аккаунта'})
 
             return jsonify(db_updateProfileInfo(ID, data))
 

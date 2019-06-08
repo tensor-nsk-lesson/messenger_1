@@ -30,7 +30,6 @@ def create_chat():
     if request.method == 'PUT':
         data = json_validate(request.data, conference_create_schema)
 
-
         if not data:
             return jsonify({'status': 0, 'message': 'Требуется запрос с JSON\'ом'})
 
