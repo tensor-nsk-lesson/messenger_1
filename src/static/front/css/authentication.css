@@ -14,25 +14,25 @@ body{
 	position: relative;
 	display: inline-block;
 	width: 100%;
-	height: 70px;
+	height: 40px;
 	padding: 0px;
 }
 .name{
 	display: block;
-	height: 68px;
-	width: 50%;
+	height: 38px;
+	width: 40%;
 }
 H1{
 	margin-left: 20px;
-	margin-top:6px;
-	font-size: 50px;
-	color: white;
+	margin-top: 2px;
+	font-size: 35px;
+	color: #c7c5d3;
 	font-family: msyi;
 }
 a{
-	color: white;
+	color: #c7c5d3;
 	display: block;
-	margin-top: -55px;
+	margin-top: -35px;
 	margin-left: 1250px;
 	width: 70px;
 	text-decoration: none;
@@ -41,27 +41,27 @@ a{
 a:hover{
 	border: 2px solid white;
 	padding: 3px;
-	margin-top: -60px;
+	margin-top: -40px;
 	margin-left: 1245px;
 }
 a.auth{
 	margin-left: 1200px;
-	margin-top: -70px;
+	margin-top: -55px;
 	width: 135px;
 }
 a.auth:hover{
 	margin-left: 1195px;
-	margin-top: -75px;
+	margin-top: -60px;
 }
 H2{
 	text-align: center;
 }
 .auth_form{
-	margin-top: 5%;
+	margin-top: 4%;
 	margin-left: 38%;
 	border-top: 3px solid #6b5389;
 	width: 325px;
-	background-color: white;
+	background-color: #efefef;
 	box-shadow: 0 4px 8px rgba(0,0,0,0.6);
 }
 form{
@@ -74,7 +74,7 @@ input{
 	-webkit-border-radius: 17px;
 	-moz-border-radius: 17px;
 	-khtml-border-radius: 17px;
-	background-color: white;
+	background-color: #efefef;
 	margin-bottom: 5px;
 	margin-left: 30px;
 	height: 39px;
@@ -111,7 +111,7 @@ body button{
 	width: 121px;
 	font-size: 17px;
 	color: white;
-	margin-top: 15px;
+	margin-top: 40px;
 	margin-left: 102px;
 	outline: none;
 }
@@ -119,17 +119,17 @@ button:hover{
 	background-color: #6b5389;
 }
 footer{
-	margin-top: 57px;
-	height: 50px;
+	margin-top: 81px;
+	height: 44px;
 	background-color: #bebcc4;
 }
 H3{
-	padding-top: 9px;
+	padding-top: 4px;
 	text-align: center;
 	color: #807f84;
 }
 .sign_in_footer{
-	margin-top: 231px;
+	margin-top: 255px;
 }
 @font-face{
 	font-family: msyi;

@@ -14,34 +14,27 @@ body{
 	position: relative;
 	display: inline-block;
 	width: 100%;
-	height: 70px;
+	height: 40px;
 	padding: 0px;
 }
 td{
 	width: 15%;
 }
 H2{
-	margin-left: -200px;
-	color: white;
-}
-
-img{
-	width: 60px;
-	height: 65px;
-	margin-left: 12px;
+	margin-left: -100px;
+	margin-top: 0px;
+	color: #c7c5d3;
 }
 .logo{
-	font-size: 50px;
-	color: white;
+	font-size: 35px;
+	color: #c7c5d3;
+	margin-left: 20px;
 	margin-right: 1050px;
-	margin-top: -7px;
+	margin-top: -5px;
 	font-family: msyi;
 }
-p{
-	font-size: 10px;
-	color: white;
-	margin-top: -35px;
-	margin-left: 3px;
+.logout{
+	margin-left: 25px;
 }
 .content{
 	position: absolute;
@@ -52,7 +45,7 @@ p{
 	margin-left: 10px;
 	margin-top: 20px;
 	border-top: 3px solid #6b5389;
-	background-color: white;
+	background-color: #efefef;
 	width: 350px;
 	height: 500px;
 }
@@ -78,7 +71,7 @@ H3.dialogs{
 	margin-left: 400px;
 	margin-top: -505px;
 	border-top: 3px solid #6b5389;
-	background-color: white;
+	background-color: #efefef;
 	width: 600px;
 	height: 500px;
 }
@@ -87,7 +80,7 @@ H3.dialogs{
 }
 button.settings{
 	border: none;	
-	background-color: white;
+	background-color: #efefef;
 	color: silver;
 	margin-top: 15px;
 	padding-left: 15px;
@@ -198,7 +191,7 @@ button.add{
 	position: absolute;
 	margin-left: 1040px;
 	margin-top: -405px;
-	background-color: white;
+	background-color: #efefef;
 	width: 250px;
 	height: 300px;
 }
@@ -209,17 +202,14 @@ button.add{
 	padding-left: 55px;
 }
 footer{
-	margin-top: 543px;
-	height: 50px;
+	margin-top: 573px;
+	height: 48px;
 	background-color: #bebcc4;
 }
 H3.footer{
 	padding-top: 9px;
 	text-align: center;
 	color: black;
-}
-.sign_in_footer{
-	margin-top: 231px;
 }
 @font-face{
 	font-family: msyi;
