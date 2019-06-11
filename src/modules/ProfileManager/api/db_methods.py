@@ -66,11 +66,12 @@ def db_blockProfile(ID, status=True):
 
 
 def db_getUserID(data):
-    sql='''
-        SELECT user_id
-        FROM auth
-        WHERE login='{login}';
-    '''.format(**data)
+    sql="SELECT user_id FROM auth WHERE "
+
+    if data['email']:
+        sql += "email='{email}';".format(**data)
+    elif data['login']:
+        sql += "login='{login}';".format(**data)
     user_id = sql_execute(sql, fetch_all=False)
     return user_id['user_id']
 
