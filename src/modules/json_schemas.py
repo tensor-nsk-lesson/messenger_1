@@ -47,10 +47,10 @@ conference_send_schema = {
     'required': ['name']
 }
 
-email_schema = {
+password_schema = {
     'type': 'object',
     'properties': {
-        'email': {'type': 'string', 'pattern': '^[0-9A-z-_]+@[0-9A-z-_]+.[0-9A-z]+$'},
+        'password': {'type': 'string', 'pattern': '^[0-9A-z-_]+$'},
     },
-    'required': ['email']
+    'required': ['password']
 }

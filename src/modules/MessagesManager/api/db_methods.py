@@ -1,4 +1,5 @@
-from modules.database import sql_execute;
+from modules.database import sql_execute
+
 
 def db_addChat(nameChat):
     sql='''
@@ -8,6 +9,7 @@ def db_addChat(nameChat):
     chatID = sql_execute(sql, fetch_all=False)
     return chatID['id']
 
+
 def db_addUserInChat(userID, chatID, permission=0):
     sql='''
         INSERT INTO permissions_users (chat_id, user_id, permission)
@@ -15,6 +17,7 @@ def db_addUserInChat(userID, chatID, permission=0):
     '''.format(chatID, userID, permission)
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
+
 
 def db_addMessageForChat(userID, chatID, content, section_id=0):
     sql = '''
@@ -30,6 +33,7 @@ def db_addMessageForChat(userID, chatID, content, section_id=0):
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
 
+
 def db_getMessagesUserFromChat(userID, chatID):
     sql = '''
         SELECT content, created_at, section_id
@@ -37,6 +41,7 @@ def db_getMessagesUserFromChat(userID, chatID):
         WHERE user_id='{:d}' and chat_id='{:d}'
     '''.format(userID, chatID)
     return sql_execute(sql, True)
+
 
 def db_getMessagesFromChat(chatID):
     sql = '''

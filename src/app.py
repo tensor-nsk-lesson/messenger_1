@@ -21,8 +21,7 @@ from modules.MessagesManager.routes import messages_module
 app.register_blueprint(messages_module, url_prefix='/chat')
 
 # Parse Flask configuration
-from config import CONFIGURATION
-app.config.from_object(CONFIGURATION)
+app.config.from_pyfile('config.ini')
 
 
 if __name__ == '__main__':

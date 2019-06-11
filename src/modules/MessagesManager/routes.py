@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify
-from modules.MessagesManager.api.functions import db_getMessage, db_sendMessage
-from modules.MessagesManager.api.db_methods import db_addChat, db_addMessageForChat, db_addUserInChat
-from modules.MessagesManager.api.db_methods import db_getMessagesFromChat
-from modules.AuthManager.SessionControl.app import getUserID
+from modules.MessagesManager.api.functions import db_getMessage
+from modules.MessagesManager.api.db_methods import db_addChat, db_addMessageForChat
+from api.functions import getUserID
 from modules.json_validator import json_validate
 from modules.json_schemas import conference_create_schema
 
