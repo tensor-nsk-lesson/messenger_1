@@ -1,36 +1,47 @@
 from modules.database import sql_execute;
 
-def db_addDialog(nameDialog):
+def db_addChat(nameChat):
     sql='''
-        INSERT INTO dialogs (name, created_at)
+        INSERT INTO chat (name, created_at)
         VALUES ('{name}', NOW()) RETURNING id;
-    '''.format(**nameDialog)
-    dialogID = sql_execute(sql, fetch_all=False)
-    return dialogID['id']
+    '''.format(**nameChat)
+    chatID = sql_execute(sql, fetch_all=False)
+    return chatID['id']
 
-
-def db_addUserInDialog(userID, dialogID, permission):
+def db_addUserInChat(userID, chatID, permission=0):
     sql='''
-        INSERT INTO dialogUser (dialog_id, user_id, permission)
+        INSERT INTO permissions_users (chat_id, user_id, permission)
         VALUES ('{:d}', '{:d}', '{:d}'})
-    '''.format(dialogID, userID, permission)
+    '''.format(chatID, userID, permission)
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
 
-
-def db_addMessageForDialog(userID, content, dialogID, section_id=0):
+def db_addMessageForChat(userID, chatID, content, section_id=0):
+    sql = '''
+        INSERT INTO message (context, created_at, section_id)
+        VALUES ('{}', NOW(), '{:d}')
+        RETURNING id;
+    '''.format(content, section_id)
+    messageID = sql_execute(sql, True)
     sql='''
-        INSERT INTO messages (dialog_id, content, created_at, user_id, section_id)
-        VALUES ('{:d}', '{}', NOW(), '{:d}', '{:d}')
-    '''.format(dialogID, userID, section_id, content)
+        INSERT INTO messages_users (chat_id, user_id, message_id)
+        VALUES ('{:d}', '{:d}', '{:d}')
+    '''.format(chatID, userID, messageID)
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
 
+def db_getMessagesUserFromChat(userID, chatID):
+    sql = '''
+        SELECT content, created_at, section_id
+        FROM messages_users, message
+        WHERE user_id='{:d}' and chat_id='{:d}'
+    '''.format(userID, chatID)
+    return sql_execute(sql, True)
 
-def db_getMessagesFromDialog(dialogID):
+def db_getMessagesFromChat(chatID):
     sql = '''
         SELECT user_id, content, created_at, section_id
-        FROM messages
-        WHERE dialog_id='{:d}'
-    '''.format(dialogID)
+        FROM messages_users, message
+        WHERE chat_id='{:d}'
+    '''.format(chatID)
     return sql_execute(sql, fetch_all=True)

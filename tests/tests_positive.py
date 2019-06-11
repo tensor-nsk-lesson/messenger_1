@@ -12,6 +12,7 @@ class TestProfilePositive(unittest.TestCase):
                 'second_name': string,
                 'login': string,
                 'password': string,
+                'email': string,
             }
             print(data)
             resp = requests.post('http://127.0.0.1:5000/register', json=data)

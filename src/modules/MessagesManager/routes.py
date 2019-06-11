@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from modules.MessagesManager.api.functions import db_getMessage, db_sendMessage
-from modules.MessagesManager.api.db_methods import db_addDialog, db_addMessageForDialog, db_addUserInDialog
-from modules.MessagesManager.api.db_methods import db_getMessagesFromDialog
+from modules.MessagesManager.api.db_methods import db_addChat, db_addMessageForChat, db_addUserInChat
+from modules.MessagesManager.api.db_methods import db_getMessagesFromChat
 from modules.AuthManager.SessionControl.app import getUserID
 from modules.json_validator import json_validate
 from modules.json_schemas import conference_create_schema
@@ -10,7 +10,7 @@ from modules.json_schemas import conference_create_schema
 messages_module = Blueprint('messages', __name__)
 
 @messages_module.route('/<int:dialogID>', methods=['GET, PUT, DELETE'])
-def send_message(dialogID):
+def send_message(chatID):
     if request.method == 'PUT':
         data = json_validate(request.data, conference_create_schema)
         UUID = request.cookies.get('SESSION')
@@ -22,7 +22,7 @@ def send_message(dialogID):
             return jsonify({'status': 0, 'message': 'Не заполнены данные о имени конференции'})
 
         user_id = getUserID(UUID)
-        return jsonify(db_addMessageForDialog(user_id, data['content'], dialogID, 0))
+        return jsonify(db_addMessageForChat(user_id, data['content'], chatID, 0))
 
 
 @messages_module.route('/create', methods=['PUT'])
@@ -35,17 +35,17 @@ def create_chat():
 
         if not data['name']:
             return jsonify({'status': 0, 'message': 'Не заполнены данные о имени конференции'})
-        dialogID = db_addDialog(data)
-        return jsonify({'status': 1, 'dialogID': dialogID})
+        chatID = db_addChat(data)
+        return jsonify({'status': 1, 'dialogID': chatID})
 
 
-@messages_module.route('/get/<int:dialog_id>')
-def get_message(dialog_id):
+@messages_module.route('/get/<int:chat_id>')
+def get_message(chat_id):
     if request.method == 'GET':
-        return db_getMessage(dialog_id)
+        return db_getMessage(chat_id)
 
 
 @messages_module.route('/all')
-def get_messages(dialog_id):
+def get_messages(chat_id):
     if request.method == 'GET':
-        return db_getMessage(dialog_id)
+        return db_getMessage(chat_id)

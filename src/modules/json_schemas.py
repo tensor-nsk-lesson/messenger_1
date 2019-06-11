@@ -17,7 +17,7 @@ register_schema = {
         'first_name': {'type': 'string', 'pattern': '^[0-9A-z-_]+$'},
         'second_name': {'type': 'string', 'pattern': '^[0-9A-z-_]+$'}
     },
-    'required': ['login', 'password', 'first_name', 'second_name']
+    'required': ['login', 'password', 'first_name', 'second_name', 'email']
 }
 
 

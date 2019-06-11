@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, jsonify, make_response, abort
-from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getUserID
+from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
 from modules.ProfileManager.api.db_methods import db_setLastVisit
 from modules.ProfileManager.api.functions import isProfileBlocked, isProfileDeleted
 from modules.ProfileManager.api.db_methods import db_isProfileExists, db_updateProfileInfo
@@ -22,7 +22,11 @@ def hRegister():
         if not data:
             return abort(400)
 
-        if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name']:
+        if not data['login'] \
+                or not data['password'] \
+                or not data['first_name'] \
+                or not data['second_name'] \
+                or not data['email']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
         if db_isProfileExists(data):
@@ -54,7 +58,10 @@ def hLogin():
         if not db_isAuthDataValid(data):
             return jsonify({'status': 0, 'message': 'Неправильный логин/пароль'})
 
-        user_id = db_getUserID(data)
+        user_id = db_getUserIDbyLogin(data)
+        if user_id is None:
+            return jsonify({'status': 0, 'message': 'Такого аккаунта не существует'})
+
         if isProfileBlocked(user_id):
             return jsonify({'status': 0, 'message': 'Данный аккаунт заблокирован'})
         elif isProfileDeleted(user_id):
@@ -96,14 +103,14 @@ def resetPW(token):
         if not data:
             return abort(400)
 
-        if not data['email']:
+        if data != 'email':
             return jsonify({'status': 0, 'message': 'Требуется email'})
 
         if ''.join(re.findall(r'^[\w-_]+@[\w-_]+.[\w]+$', data['email'])) != data['email']:
             return jsonify({'status': 0, 'message': 'Неправильный формат email\'а'})
 
         send_message_confirm_reset_pw(data['email'])
-        userid = db_getUserID(data)
+        userid = db_getUserIDbyEmail(data)
         # data.update({'password': sha256(data['password'].encode())})  # Хешируем введённый пользователем пароль
         return jsonify({'status': 1})
 
