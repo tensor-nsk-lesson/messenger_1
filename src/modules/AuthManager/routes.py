@@ -59,7 +59,7 @@ def hLogin():
             return jsonify({'status': 0, 'message': 'Неправильный логин/пароль'})
 
         user_id = db_getUserIDbyLogin(data)
-        if user_id is None:
+        if not user_id:
             return jsonify({'status': 0, 'message': 'Такого аккаунта не существует'})
 
         if isProfileBlocked(user_id):
