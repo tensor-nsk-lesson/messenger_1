@@ -4,7 +4,6 @@ import json
 import random
 
 class TestProfileNegative(unittest.TestCase):
-
     def test_add_user_positive(self):
         for _ in range(3):
             string = ''.join([chr(random.randint(65, 90)) for _ in range(9)])
@@ -13,6 +12,7 @@ class TestProfileNegative(unittest.TestCase):
                 'second_name': string,
                 'login': string,
                 'password': string,
+                'email': string,
             }
             print(data)
             resp = requests.post('http://127.0.0.1:5000/register', json=data)

@@ -3,8 +3,8 @@ from modules.database import sql_execute
 ## DEVELOP METHODS
 def db_addProfile(data):
     sql='''
-        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted) 
-        VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false) RETURNING id;
+        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted, email, is_confirmed) 
+        VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false, '{email}', false) RETURNING id;
     '''.format(**data)
     user_id = sql_execute(sql, fetch_all=True)
     sql = """
@@ -29,7 +29,7 @@ def db_isAuthDataValid(data):
 
 
 def db_isProfileExists(data):
-    sql = "SELECT count(login) FROM auth "
+    sql = "SELECT count(login) FROM auth"
 
     if type(data) == int:
         sql += " WHERE user_id='{:d}';".format(data)
@@ -86,7 +86,7 @@ def db_getUserID(data):
 def db_delProfile(ID, status=True):
     # TODO: Добавить запрос на удаление пользователя
     sql='''
-        UPDATE users 
+        UPDATE users
         SET is_deleted='{}'
         WHERE id='{:d}';
     '''.format(status, ID)
@@ -107,7 +107,7 @@ def db_FullDelProfile(ID):
 
 def db_getProfileInfo(ID):
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
         FROM users
         WHERE id='{:d}';
     '''.format(ID)
@@ -116,7 +116,7 @@ def db_getProfileInfo(ID):
 
 def db_getProfilesInfo():
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
         FROM users;
     '''
     return sql_execute(sql, fetch_all=True)

@@ -24,7 +24,8 @@ def hRegister():
         if not data:
             return abort(400)
 
-        if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name']:
+        if not data['login'] or not data['password'] or not data['first_name'] or not data['second_name'] \
+                or not data['email']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
         if db_isProfileExists(data):

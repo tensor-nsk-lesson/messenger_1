@@ -14,9 +14,10 @@ register_schema = {
         'login': {'type': 'string', 'pattern': '^\w+$'},
         'password': {'type': 'string', 'pattern': '^\w+$'},
         'first_name': {'type': 'string', 'pattern': '^\w+$'},
-        'second_name': {'type': 'string', 'pattern': '^\w+$'}
+        'second_name': {'type': 'string', 'pattern': '^\w+$'},
+        'email': {'type': 'string', 'pattern': '^\w+$'}
     },
-    'required': ['login', 'password', 'first_name', 'second_name']
+    'required': ['login', 'password', 'first_name', 'second_name', 'email']
 }
 
 
