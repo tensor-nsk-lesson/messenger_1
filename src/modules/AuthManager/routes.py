@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, jsonify, make_response, abort
+from flask import Blueprint, request, redirect, jsonify, make_response, abort, url_for
 from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
 from modules.ProfileManager.api.db_methods import db_setLastVisit
 from modules.ProfileManager.api.functions import isProfileBlocked, isProfileDeleted
@@ -6,6 +6,9 @@ from modules.ProfileManager.api.db_methods import db_isProfileExists, db_updateP
 from modules.AuthManager.SessionControl.app import initRedis_db
 from modules.json_validator import json_validate
 from modules.json_schemas import login_schema, register_schema, email_schema
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail, Message
+from src.app import app
 from hashlib import sha256
 from random import randint
 import uuid
@@ -13,6 +16,7 @@ import time
 import re
 
 auth_module = Blueprint('auth', __name__)
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 @auth_module.route('/register', methods=['GET', 'POST'])
 def hRegister():
@@ -93,27 +97,35 @@ def logout():
 
 
 # TODO: Сделать валидацию JSON'а от пользователя
-@auth_module.route('/reset-password/<token>', methods=['POST'])
+
 @auth_module.route('/reset-password')
-def resetPW(token):
+def resetPW_request():
     r = initRedis_db()
     global userid
+
     if request.method == 'GET':
-        data = request.args.get('email')
-        if not data:
-            return abort(400)
+        email = request.args.get('email')
+        if not email:
+            return jsonify({'status': 0, 'message': 'Требуется параметр с email'})
 
-        if data != 'email':
-            return jsonify({'status': 0, 'message': 'Требуется email'})
-
-        if ''.join(re.findall(r'^[\w-_]+@[\w-_]+.[\w]+$', data['email'])) != data['email']:
+        if ''.join(re.findall(r'^[0-9A-z-_]+@[0-9A-z-_]+.[0-9A-z]+$', email)) != email:
             return jsonify({'status': 0, 'message': 'Неправильный формат email\'а'})
 
-        send_message_confirm_reset_pw(data['email'])
-        userid = db_getUserIDbyEmail(data)
+        mail = Mail(app)
+        token = s.dumps(email, salt=app.config['SECRET_KEY'])
+        msg = Message('Confirm Email', sender='mevomsngr@yandex.ru', recipients=[email])
+        link = url_for('resetPW', token=token, _external=True)
+        msg.body = 'Ссылка для сброса пароля: {}. Если вы не отправляли запрос на сброс пароля, то просто проигнорируйте это сообщение.'.format(
+            link)
+        mail.send(msg)
+        userid = db_getUserIDbyEmail(email)
         # data.update({'password': sha256(data['password'].encode())})  # Хешируем введённый пользователем пароль
         return jsonify({'status': 1})
 
+
+
+@auth_module.route('/reset-password/<token>', methods=['POST'])
+def resetPW(token):
     if request.method == 'POST':
         data = json_validate(request.json, email_schema)
         if not data:
