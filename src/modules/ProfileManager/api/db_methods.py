@@ -25,7 +25,8 @@ def db_isAuthDataValid(data):
         WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
-    return not answer
+    print(answer)
+    return answer is not None
 
     #return bool(answer['user_id'])
 

@@ -73,7 +73,7 @@ def hLogin():
         generate_uuid = str(uuid.uuid3(uuid.NAMESPACE_DNS, str(user_id + time.time()) + salt))
 
         #return jsonify(db_getProfileInfo(user_id))
-        r.set(generate_uuid, user_id, timeout=1000)
+        r.set(generate_uuid, user_id, ex=1000)
         response = make_response(redirect('/profile/{}'.format(user_id)))
         response.set_cookie('SESSION', bytes(generate_uuid, 'utf-8'))
         return response
