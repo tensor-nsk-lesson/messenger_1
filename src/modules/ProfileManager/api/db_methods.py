@@ -4,13 +4,14 @@ from modules.database import sql_execute
 def db_addProfile(data):
     print(data)
     sql='''
-        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted, email, is_confirmed) 
-        VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, true, false, '{email}', false) RETURNING id;
+        INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted, is_confirmed) 
+        VALUES ('{first_name}', '{second_name}', NOW(), NOW(), false, false, false, false) 
+        RETURNING id;
     '''.format(**data)
     user_id = sql_execute(sql, fetch_all=True)
     sql = """
-        INSERT INTO auth (user_id, login, password) 
-        VALUES ('{:d}', '{login}', '{password}');
+        INSERT INTO auth (user_id, login, password, email) 
+        VALUES ('{:d}', '{login}', '{password}', '{email}');
     """.format(user_id[0]['id'], **data)
     sql_execute(sql, fetch_all=False)
     return {'status': 1}
@@ -106,7 +107,7 @@ def db_FullDelProfile(ID):
 
 def db_getProfileInfo(ID):
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
+        SELECT *
         FROM users
         WHERE id='{:d}';
     '''.format(ID)
@@ -115,7 +116,7 @@ def db_getProfileInfo(ID):
 
 def db_getProfilesInfo():
     sql='''
-        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
+        SELECT *
         FROM users;
     '''
     return sql_execute(sql, fetch_all=True)
