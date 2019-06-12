@@ -1,4 +1,4 @@
-from modules.database import sql_execute
+from modules.API.sql_execute import sql_execute
 from hashlib import sha256
 
 ## DEVELOP METHODS
@@ -19,6 +19,7 @@ def db_addProfile(data):
 
 
 def db_isAuthDataValid(data):
+    print('-- db_isAuthDataValid() --')
     print(data)
     sql='''
         SELECT user_id
@@ -26,12 +27,13 @@ def db_isAuthDataValid(data):
         WHERE login='{login}' AND password='{password}';
     '''.format(**data)
     answer = sql_execute(sql, fetch_all=False)
-    if not answer:
-        return True
-    else:
-        return False
+    print(answer)
+    print('------------------------')
 
-    #return bool(answer['user_id'])
+    if not answer:
+        return False
+    else:
+        return True
 
 
 def db_isProfileExists(data):
