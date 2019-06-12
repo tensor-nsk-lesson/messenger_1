@@ -7,7 +7,6 @@ app = Flask(__name__, static_url_path='')
 from modules.AuthManager.MailManager.routes import mail_module
 app.register_blueprint(mail_module)
 
-
 #  Auth Manager
 from modules.AuthManager.routes import auth_module
 app.register_blueprint(auth_module)
@@ -16,8 +15,8 @@ app.register_blueprint(auth_module)
 from modules.ProfileManager.routes import profile_module
 app.register_blueprint(profile_module, url_prefix='/profile')
 
-#  Messages Manager
-from modules.MessagesManager.routes import messages_module
+#  Chat Manager
+from modules.ChatManager.routes import messages_module
 app.register_blueprint(messages_module, url_prefix='/chat')
 
 # Parse Flask configuration

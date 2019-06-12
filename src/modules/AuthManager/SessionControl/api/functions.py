@@ -1,5 +1,5 @@
 from modules.ProfileManager.api.db_methods import db_setLastVisit
-from flask import make_response, redirect
+from flask import make_response, redirect, jsonify
 from random import randint
 import time
 import redis
@@ -7,7 +7,7 @@ import uuid
 
 
 def initRedis_db():
-    r = redis.Redis(host='localhost',port=6379)
+    r = redis.Redis(host='localhost',port=6379, charset="utf-8", decode_responses=True)
     return r
 
 
@@ -27,4 +27,12 @@ def setSession(user_id):
     r.set(generate_uuid, user_id, ex=1000)
     response = make_response(redirect('/profile/{}'.format(user_id)))
     response.set_cookie('SESSION', bytes(generate_uuid, 'utf-8'))
+    return response
+
+
+def deleteSession(session):
+    r = initRedis_db()
+    r.delete(session)
+    response = make_response(redirect('/profile/all'))
+    response.delete_cookie('SESSION')
     return response
