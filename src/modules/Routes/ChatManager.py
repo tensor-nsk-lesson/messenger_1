@@ -1,18 +1,21 @@
 from flask import Blueprint, request, jsonify
-from modules.MessagesManager.api.functions import db_getMessage
-from modules.MessagesManager.api.db_methods import db_addChat, db_addMessageForChat
-from api.functions import getUserID
+from modules.ChatManager.api.functions import db_getMessage
+from chat_methods import db_addChat, db_addMessageForChat
+
 from modules.json_validator import json_validate
 from modules.json_schemas import conference_create_schema
-
+from modules.AuthManager.SessionControl.api.functions import initRedis_db
+from chat_methods import db_addUserInChat
 
 messages_module = Blueprint('messages', __name__)
 
 @messages_module.route('/<int:chatID>', methods=['GET, PUT, DELETE'])
 def send_message(chatID):
+    r = initRedis_db()
     if request.method == 'PUT':
         data = json_validate(request.data, conference_create_schema)
         UUID = request.cookies.get('SESSION')
+        user_id = r.get(UUID)
 
         if not data:
             return jsonify({'status': 0, 'message': 'Требуется запрос с JSON\'ом'})
@@ -20,21 +23,37 @@ def send_message(chatID):
         if not data['login'] or not data['content'] or not data['section_id']:
             return jsonify({'status': 0, 'message': 'Не заполнено имя конференции'})
 
-        user_id = getUserID(UUID)
+
         return jsonify(db_addMessageForChat(user_id, data['content'], chatID, 0))
 
 
 @messages_module.route('/create', methods=['PUT'])
 def create_chat():
+    r = initRedis_db()
     if request.method == 'PUT':
         data = json_validate(request.data, conference_create_schema)
+        print(data)
+        print(request.cookies)
+        if 'SESSION' not in request.cookies:
+                return jsonify({'status': 0, 'message': 'Требуется авторизовация'})
+
+        UUID = request.cookies.get('SESSION')
+        user_id = r.get(UUID)
+        if user_id is None:
+            return jsonify({'status': 0, 'message': 'Требуется авторизация'})
+
+        print(user_id)
+
 
         if not data:
             return jsonify({'status': 0, 'message': 'Требуется запрос с JSON\'ом'})
 
         if not data['name']:
             return jsonify({'status': 0, 'message': 'Не заполнены данные о имени конференции'})
+
         chatID = db_addChat(data)
+        print(chatID)
+        db_addUserInChat(user_id, chatID, permission=2)
         return jsonify({'status': 1, 'dialogID': chatID})
 
 
@@ -44,7 +63,7 @@ def get_message(chat_id):
         return db_getMessage(chat_id)
 
 
-@messages_module.route('/all')
+@messages_module.route('/get/all')
 def get_messages(chat_id):
     if request.method == 'GET':
         return db_getMessage(chat_id)

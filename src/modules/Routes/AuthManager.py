@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify, abort
-from modules.ProfileManager.api.db_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
+from profile_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
 from modules.ProfileManager.api.functions import isProfileBlocked, isProfileDeleted
-from modules.ProfileManager.api.db_methods import db_isProfileExists, db_updateProfileInfo, db_setActive
+from profile_methods import db_isProfileExists, db_updateProfileInfo, db_setActive
 from modules.AuthManager.MailManager.api.functions import sendConfirm
-from modules.AuthManager.SessionControl.api.functions import setSession
-from api.functions import initRedis_db
+from modules.AuthManager.SessionControl.api.functions import setSession, deleteSession
+from modules.AuthManager.SessionControl.api.functions import initRedis_db
+from modules.AuthManager.api.functions import isUserAuthorized
 from modules.json_validator import json_validate
 from modules.json_schemas import login_schema, register_schema, password_schema
 from hashlib import sha256
@@ -34,7 +35,7 @@ def hRegister():
             return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже существует'})
 
 
-        sendConfirm(data['email'])
+        # sendConfirm(data['email'])
         return jsonify(db_addProfile(data))
 
 
@@ -43,7 +44,7 @@ def hRegister():
 def hLogin():
     r = initRedis_db()
     if request.method == 'POST':
-        if 'SESSION' in request.cookies:
+        if isUserAuthorized():
             UUID = request.cookies['SESSION']
             if r.get(UUID):
                 return jsonify({'status': 0, 'message': 'Вы уже авторизованы'})
@@ -74,14 +75,11 @@ def hLogin():
 # TODO: Сделать валидацию JSON'а от пользователя
 @auth_module.route('/logout', methods=['GET', 'POST'])
 def logout():
-    r = initRedis_db()
-    if not 'SESSION' in request.cookies.keys():
-        jsonify({'status': 0, 'message': 'Вы не авторизованы'})
+    if not isUserAuthorized():
+        return jsonify({'status': 0, 'message': 'Вы не авторизованы'})
 
     UUID = request.cookies.get('SESSION')
-    r.delete(UUID)
-
-    return jsonify({'status': 1})
+    return deleteSession(UUID)
 
 
 # TODO: Сделать валидацию JSON'а от пользователя
@@ -117,7 +115,6 @@ def resetPW(token):
             token_decoded.update(jwt.decode(token, 'uzE7lSw8Ch7X4aB81E22Z6Nh', algorithms=['HS256']))
         except Exception as err:
             print(err)
-
 
         if int(time.time() - token_decoded['time']) > 60*10:
             return jsonify({'status': 0, 'message': 'Токен просрочен'})

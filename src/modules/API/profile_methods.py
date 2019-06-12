@@ -1,4 +1,4 @@
-from modules.database import sql_execute
+from modules.API.sql_execute import sql_execute
 from hashlib import sha256
 
 ## DEVELOP METHODS
