@@ -1,12 +1,9 @@
 from flask import Blueprint, request, jsonify, abort
-from profile_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
-from modules.ProfileManager.api.functions import isProfileBlocked, isProfileDeleted
-from profile_methods import db_isProfileExists, db_updateProfileInfo, db_setActive
-from modules.AuthManager.MailManager.api.functions import sendConfirm
-from modules.AuthManager.SessionControl.api.functions import setSession, deleteSession
-from modules.AuthManager.SessionControl.api.functions import initRedis_db
-from modules.AuthManager.api.functions import isUserAuthorized
-from modules.json_validator import json_validate
+from modules.API.profile_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
+from modules.API.profile_methods import db_isProfileExists, db_updateProfileInfo, db_setActive
+from modules.API.functions import isProfileBlocked, isProfileDeleted, isUserAuthorized
+from modules.API.functions import sendConfirm, json_validate
+from modules.API.functions import setSession, deleteSession, initRedis_db
 from modules.json_schemas import login_schema, register_schema, password_schema
 from hashlib import sha256
 import jwt

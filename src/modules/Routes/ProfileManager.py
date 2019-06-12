@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify, abort
-from profile_methods import db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
-from profile_methods import db_FullDelProfile, db_isProfileExists
-from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
-from modules.json_validator import json_validate
+from modules.API.profile_methods import db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
+from modules.API.profile_methods import db_FullDelProfile, db_isProfileExists
+from modules.API.functions import isProfileDeleted, isProfileBlocked
+from modules.API.functions import json_validate
 from modules.json_schemas import profile_update_schema
 
 profile_module = Blueprint('profile', __name__)
