@@ -1,11 +1,8 @@
 from flask import Blueprint, request, jsonify
-from modules.ChatManager.api.functions import db_getMessage
-from chat_methods import db_addChat, db_addMessageForChat
-
-from modules.json_validator import json_validate
+from modules.API.chat_methods import db_addChat, db_addMessageForChat, db_addUserInChat, db_getMessagesFromChat
+from modules.API.functions import json_validate
 from modules.json_schemas import conference_create_schema
-from modules.AuthManager.SessionControl.api.functions import initRedis_db
-from chat_methods import db_addUserInChat
+from modules.API.functions import initRedis_db
 
 messages_module = Blueprint('messages', __name__)
 
@@ -60,10 +57,10 @@ def create_chat():
 @messages_module.route('/get/<int:chat_id>')
 def get_message(chat_id):
     if request.method == 'GET':
-        return db_getMessage(chat_id)
+        return db_getMessagesFromChat(chat_id)
 
 
 @messages_module.route('/get/all')
 def get_messages(chat_id):
     if request.method == 'GET':
-        return db_getMessage(chat_id)
+        return db_getMessagesFromChat(chat_id)
