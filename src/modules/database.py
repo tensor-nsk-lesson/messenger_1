@@ -19,8 +19,8 @@ def sql_execute(query, fetch_all):
             TRUE - вернёт answer
             FALSE - скажет, что нечего возвращать
         '''
-        #print(err)
-        pass
+        print(err)
+        conn.rollback()
 
     finally:
         cursor.close()
