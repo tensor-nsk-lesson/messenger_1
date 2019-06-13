@@ -3,11 +3,14 @@ html, body{
 	height: 100%;
 	padding: 0px;
 	margin: 0px;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 body{
 	background-color: #d8d6df;
 	position: absolute;
+}
+*{
+	font-family: roboto;
 }
 .header{
 	background: linear-gradient(to left, #6b5389 0%, #382b47 50%, #6b5389 100%);
@@ -23,15 +26,15 @@ td{
 H2{
 	margin-left: -100px;
 	margin-top: 0px;
-	color: #c7c5d3;
+	color: #d8d6df;
+	font-size: 20px;
 }
 .logo{
-	font-size: 35px;
-	color: #c7c5d3;
+	font-size: 25px;
+	color: #d8d6df;
 	margin-left: 20px;
 	margin-right: 1050px;
-	margin-top: -5px;
-	font-family: msyi;
+	margin-top: 1px;
 }
 .logout{
 	margin-left: 25px;
@@ -43,7 +46,7 @@ H2{
 }
 .dialogs_list{
 	margin-left: 10px;
-	margin-top: 20px;
+	margin-top: 40px;
 	border-top: 3px solid #6b5389;
 	background-color: #efefef;
 	width: 350px;
@@ -93,6 +96,7 @@ button.settings{
 	margin-left: 160px;
 	margin-top: -30px;
 	width: 260px;
+	font-size: 30px;
 }
 .search{
 	margin-left:470px;
@@ -202,16 +206,21 @@ button.add{
 	padding-left: 55px;
 }
 footer{
-	margin-top: 573px;
-	height: 48px;
+	margin-top: 583px;
+	height: 40px;
 	background-color: #bebcc4;
 }
 H3.footer{
 	padding-top: 9px;
 	text-align: center;
-	color: black;
+	color: #9695a0;
+	font-family: yi;
 }
 @font-face{
-	font-family: msyi;
+	font-family: roboto;
+	src:url(fonts/Roboto-Regular.ttf) format('truetype')
+}
+@font-face{
+	font-family: yi;
 	src:url(fonts/msyi.ttf) format('truetype')
 }
