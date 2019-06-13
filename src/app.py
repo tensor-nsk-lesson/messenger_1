@@ -2,22 +2,26 @@ from flask import Flask
 
 app = Flask(__name__, static_url_path='')
 
-# Parse Flask configuration
-from config import CONFIGURATION
-app.config.from_object(CONFIGURATION)
+
+#  Mail Manager
+from modules.Routes.MailManager import mail_module
+app.register_blueprint(mail_module)
 
 #  Auth Manager
-from modules.AuthManager.routes import auth_module
+from modules.Routes.AuthManager import auth_module
 app.register_blueprint(auth_module)
 
 #  Profile Manager
-from modules.ProfileManager.routes import profile_module
-app.register_blueprint(profile_module)
+from modules.Routes.ProfileManager import profile_module
+app.register_blueprint(profile_module, url_prefix='/profile')
 
-# #  Messages Manager
-# from MessagesManager.routes import messages_module
-# app.register_blueprint(messages_module)
+#  Chat Manager
+from modules.Routes.ChatManager import messages_module
+app.register_blueprint(messages_module, url_prefix='/chat')
+
+# Parse Flask configuration
+app.config.from_pyfile('config.ini')
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)

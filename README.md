@@ -3,3 +3,9 @@
 
 ![Image](https://i.imgur.com/ELrVdYG.png)
 
+# Как запустить
+
+1. Запустить redis-server
+1. Перейти в папку с мессенджером.
+2. В командную строку: python -m pip install -r requirements.txt
+3. Запустить app.py файл

@@ -3,3 +3,4 @@ psycopg2
 redis
 python_socketio
 flask-expects-json
+Flask-Mail

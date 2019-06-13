@@ -1,0 +1,226 @@
+html, body{
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+}
+body{
+	background-color: #d8d6df;
+	position: absolute;
+}
+*{
+	font-family: roboto;
+}
+.header{
+	background: linear-gradient(to left, #6b5389 0%, #382b47 50%, #6b5389 100%);
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	height: 40px;
+	padding: 0px;
+}
+td{
+	width: 15%;
+}
+H2{
+	margin-left: -100px;
+	margin-top: 0px;
+	color: #d8d6df;
+	font-size: 20px;
+}
+.logo{
+	font-size: 25px;
+	color: #d8d6df;
+	margin-left: 20px;
+	margin-right: 1050px;
+	margin-top: 1px;
+}
+.logout{
+	margin-left: 25px;
+}
+.content{
+	position: absolute;
+	display: block;
+	margin-left: 35px;
+}
+.dialogs_list{
+	margin-left: 10px;
+	margin-top: 40px;
+	border-top: 3px solid #6b5389;
+	background-color: #efefef;
+	width: 350px;
+	height: 500px;
+}
+.zag, .zag2, .zag3{
+	margin-top: 5px;
+	padding-top: 3px;
+	display: block;
+	height: 60px;
+}
+.zag{
+	background-color: #d3d3d3;
+}
+.dialogs_list_img{
+	padding: 3px;
+	height: 50px;
+	width: 50px;
+}
+H3.dialogs{
+	margin-left: 100px;
+	margin-top: -40px;
+}
+.dialog{
+	margin-left: 400px;
+	margin-top: -505px;
+	border-top: 3px solid #6b5389;
+	background-color: #efefef;
+	width: 600px;
+	height: 500px;
+}
+.zag2{
+	border-bottom: 2px solid silver; 
+}
+button.settings{
+	border: none;	
+	background-color: #efefef;
+	color: silver;
+	margin-top: 15px;
+	padding-left: 15px;
+	text-transform: uppercase;
+	font-size: 15px;
+	outline: none;
+	cursor: pointer;
+}
+.sobes{
+	margin-left: 160px;
+	margin-top: -30px;
+	width: 260px;
+	font-size: 30px;
+}
+.search{
+	margin-left:470px;
+	margin-top: -55px;
+	height: 32px;
+	width: 32px;
+}
+.search2{
+	border: 0px;
+	height: 32px;
+	width: 32px;
+	background: url(../img/search.png) center center no-repeat;
+	outline: none;
+}
+.search2:hover{
+	cursor: pointer;
+}
+.search2:active{
+	height: 30px;
+	width: 30px;
+}
+.ava1,.ava2{
+	border: 0px;
+	margin-top: -28px;
+	width: 30px;
+	height: 30px;
+	border-radius: 30px;
+	outline: none;
+	cursor: pointer;
+}
+button.ava1, button.ava2{
+	margin-top: -1px;
+}
+
+div.ava1{
+	position: absolute;
+	margin-left: 530px;
+	z-index: 2;
+}
+div.ava2{
+	position: absolute;
+	margin-left: 545px;
+	z-index: 1;
+}
+.message{
+	margin-top: 400px;
+	width: 600px;
+	height: 53px;
+	background-color: silver;
+	position: relative;
+}
+textarea{
+	border: 2px solid silver;
+	padding: 5px;
+	margin-left: 20px;
+	margin-top: 5px;
+	width: 507px;
+	height: 30px;
+	background-color: #dbdbdb;
+	border-radius: 13px;
+	outline: none;
+	font-size:15px;
+	resize: none;
+}
+body ::-webkit-input-placeholder{
+	color: #8e8b8b;
+	font-size: 20px;
+	padding-left: 7px;
+}
+body ::-moz-placeholder{
+	color: #8e8b8b;
+	font-size: 20px;
+	padding-left: 7px;
+}
+body :-moz-placeholder{
+	color: #8e8b8b;
+	font-size: 20px;
+	padding-left: 7px;
+}
+body :-ms-input-placeholder{
+	color: #8e8b8b;
+	font-size: 20px;
+	padding-left: 7px;
+}
+button.send_mes, button.add{
+	position: absolute;
+	margin-top: 18px;
+	margin-left: 5px;
+	height: 20px;
+	width: 20px;
+}
+button.add{
+	margin-left: 29px;
+}
+.selected_chats{
+	position: absolute;
+	margin-left: 1040px;
+	margin-top: -405px;
+	background-color: #efefef;
+	width: 250px;
+	height: 300px;
+}
+.zag3{
+	position: relative;
+	background-color: #d3d3d3;
+	border-left: 2px solid #6b5389;
+	padding-left: 55px;
+}
+footer{
+	margin-top: 583px;
+	height: 40px;
+	background-color: #bebcc4;
+}
+H3.footer{
+	padding-top: 9px;
+	text-align: center;
+	color: #9695a0;
+	font-family: yi;
+}
+@font-face{
+	font-family: roboto;
+	src:url(fonts/Roboto-Regular.ttf) format('truetype')
+}
+@font-face{
+	font-family: yi;
+	src:url(fonts/msyi.ttf) format('truetype')
+}

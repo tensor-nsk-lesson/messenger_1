@@ -49,11 +49,11 @@ CREATE TABLE "dialogUser" (
 
 
 
-CREATE TABLE "authentications" (
+CREATE TABLE "auth" (
 	"user_id" integer NOT NULL,
-	"login" TEXT NOT NULL,
+	"login" TEXT NOT NULL UNIQUE,
 	"password" TEXT NOT NULL,
-	CONSTRAINT authentications_pk PRIMARY KEY ("user_id")
+	CONSTRAINT "auth_pk" PRIMARY KEY ("user_id")
 ) WITH (
   OIDS=FALSE
 );

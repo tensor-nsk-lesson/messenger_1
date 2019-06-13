@@ -1,8 +1,8 @@
 // Added user
-INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_active, is_deleted) 
+INSERT INTO users (first_name, second_name, created_at, last_visit, is_blocked, is_online, is_deleted)
 VALUES ('Petor','Petrov', NOW(), NOW(), false, true, false)
 RETURNING id;
-INSERT INTO authentications (user_id, login, password) VALUES (2, 'petrov1234', 'petrov1234');
+INSERT INTO auth (user_id, login, password) VALUES (2, 'petrov1234', 'petrov1234');
 
 // Deleted user
 UPDATE users SET is_deleted = true WHERE id = 2;
