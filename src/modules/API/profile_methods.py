@@ -111,31 +111,29 @@ def db_getUserIDbyEmail(data):
 По дефолту стоит True, поэтому аргумент status можно не отправлять. 
 Если передать False, то восстанавливает.
 """
-def db_delProfile(ID, status=True):
-    # TODO: Добавить запрос на удаление пользователя
+def db_delProfile(ID):
     sql='''
         UPDATE users
-        SET is_deleted='{}'
+        SET is_deleted=true
         WHERE id='{:d}';
-    '''.format(status, ID)
-    return sql_execute(sql, fetch_all=True)
+    '''.format(ID)
+    return sql_execute(sql, fetch_all=False)
 
 
 def db_FullDelProfile(ID):
-    # TODO: Добавить запрос на удаление пользователя
     sql='''
         DELETE FROM auth
         WHERE user_id='{:d}';
         DELETE FROM users
         WHERE id='{:d}';
     '''.format(ID, ID)
-    sql_execute(sql, fetch_all=True)
+    sql_execute(sql, fetch_all=False)
     return {'status': 1}
 
 
 def db_getProfileInfo(ID):
     sql='''
-        SELECT *
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
         FROM users
         WHERE id='{:d}';
     '''.format(ID)
@@ -144,7 +142,7 @@ def db_getProfileInfo(ID):
 
 def db_getProfilesInfo():
     sql='''
-        SELECT *
+        SELECT first_name, second_name, id, last_visit, is_deleted, is_blocked, email, is_confirmed
         FROM users;
     '''
     return sql_execute(sql, fetch_all=True)
