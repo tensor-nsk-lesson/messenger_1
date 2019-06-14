@@ -25,7 +25,7 @@ def db_getChat(chatID):
         FROM chat
         WHERE id={:d}
     '''.format(chatID)
-    return sql_execute(sql, True)
+    return sql_execute(sql, fetch_all=True)
 
 def db_getChatFromUser(userID, chatID):
     sql='''
@@ -36,7 +36,7 @@ def db_getChatFromUser(userID, chatID):
             FROM permissions_users 
             WHERE user_id={:d})={:d}
     '''.format(userID, chatID)
-    return sql_execute(sql, True)
+    return sql_execute(sql, fetch_all=True)
 
 def db_delChat(chatID, fully=False):
     if fully:
@@ -50,7 +50,7 @@ def db_delChat(chatID, fully=False):
             SET is_deleted=true
             WHERE id={:d}
         '''.format(chatID)
-    return sql_execute(sql, False)
+    return sql_execute(sql, fetch_all=False)
 
 ## Message
 
@@ -90,6 +90,7 @@ def db_updateMessage(messageID, content):
         SET content='{:s}' and is_edited=true
         WHERE id={:d} and section_id=0
     '''.format(content, messageID)
+    return sql_execute(sql, fetch_all=False)
 
 def db_delMessage(messageID, fully=False):
     if fully:
@@ -103,4 +104,4 @@ def db_delMessage(messageID, fully=False):
             SET is_deleted=true
             WHERE id={:d}
         '''.format(messageID)
-    return sql_execute(sql, True)
+    return sql_execute(sql, fetch_all=True)
