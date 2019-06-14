@@ -108,8 +108,6 @@ def db_getUserIDbyEmail(data):
 ## PUBLIC METHODS
 """ 
 # Функция удаляет профиль пользователя. 
-По дефолту стоит True, поэтому аргумент status можно не отправлять. 
-Если передать False, то восстанавливает.
 """
 def db_delProfile(ID):
     sql='''
@@ -119,6 +117,13 @@ def db_delProfile(ID):
     '''.format(ID)
     return sql_execute(sql, fetch_all=False)
 
+def db_restoreProfile(ID):
+    sql='''
+        UPDATE users
+        SET is_deleted=false
+        WHERE id='{:d}';
+    '''.format(ID)
+    return sql_execute(sql, fetch_all=False)
 
 def db_FullDelProfile(ID):
     sql='''

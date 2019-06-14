@@ -35,7 +35,7 @@ def profile(ID):
             if isProfileDeleted(ID):
                 return jsonify({'status': 0, 'message': 'Аккаунт уже удалён'})
 
-            return jsonify(db_delProfile(ID, status=True))
+            return jsonify(db_delProfile(ID))
             #return jsonify(db_FullDelProfile(ID))
 
 
