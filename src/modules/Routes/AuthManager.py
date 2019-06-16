@@ -43,8 +43,8 @@ def hRegister():
         return jsonify(db_addProfile(data))
 
 
-@auth_module.route('/', methods=['GET', 'POST'])
-@auth_module.route('/login', methods=['GET', 'POST'])
+@auth_module.route('/', methods=['POST'])
+@auth_module.route('/login', methods=['POST'])
 def hLogin():
     r = initRedis_db()
     if request.method == 'POST':
@@ -77,7 +77,7 @@ def hLogin():
 
 
 # TODO: Сделать валидацию JSON'а от пользователя
-@auth_module.route('/logout', methods=['GET', 'POST'])
+@auth_module.route('/logout', methods=['GET'])
 def logout():
     if not isUserAuthorized():
         return jsonify({'status': 0, 'message': 'Вы не авторизованы'})
@@ -90,16 +90,15 @@ def logout():
 
 @auth_module.route('/reset-password')
 def resetPW_request():
-    if request.method == 'GET':
-        email = request.args.get('email')
-        if not email:
-            return jsonify({'status': 0, 'message': 'Требуется параметр с email'})
+    email = request.args.get('email')
+    if not email:
+        return jsonify({'status': 0, 'message': 'Требуется параметр с email'})
 
-        if ''.join(re.findall(r'^[0-9A-z-_]+@[0-9A-z-_]+.[0-9A-z]+$', email)) != email:
-            return jsonify({'status': 0, 'message': 'Неправильный формат email\'а'})
+    if ''.join(re.findall(r'^[0-9A-z-_]+@[0-9A-z-_]+.[0-9A-z]+$', email)) != email:
+        return jsonify({'status': 0, 'message': 'Неправильный формат email\'а'})
 
-        sendConfirm(email, True)
-        return jsonify({'status': 1})
+    sendConfirm(email, True)
+    return jsonify({'status': 1})
 
 
 
