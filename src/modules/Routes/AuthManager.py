@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify, abort
 from modules.API.profile_methods import db_isAuthDataValid, db_addProfile, db_getUserIDbyEmail, db_getUserIDbyLogin
 from modules.API.profile_methods import db_isProfileExists, db_updateProfileInfo, db_setActive
-from modules.API.functions import isProfileBlocked, isProfileDeleted, isUserAuthorized
+from modules.API.profile_methods import db_isEmailUsed
+from modules.API.functions import isUserAuthorized, isUserDeleted, isUserBlocked
 from modules.API.functions import sendConfirm, json_validate
 from modules.API.functions import setSession, deleteSession, initRedis_db
 from modules.json_schemas import login_schema, register_schema, password_schema
@@ -28,11 +29,17 @@ def hRegister():
                 or not data['email']:
             return jsonify({'status': 0, 'message': 'Заполнены не все данные'})
 
+
         if db_isProfileExists(data):
             return jsonify({'status': 0, 'message': 'Аккаунт с таким логином уже существует'})
 
+        if db_isEmailUsed(data):
+            return jsonify({'status': 0, 'message': 'Такая почта уже зарегистрирована'})
 
-        # sendConfirm(data['email'])
+        response = sendConfirm(data['email'], False)
+        if type(response) == dict:
+            return jsonify(response)
+
         return jsonify(db_addProfile(data))
 
 
@@ -61,9 +68,9 @@ def hLogin():
         if not user_id:
             return jsonify({'status': 0, 'message': 'Такого аккаунта не существует'})
 
-        if isProfileBlocked(user_id):
+        if isUserBlocked(user_id):
             return jsonify({'status': 0, 'message': 'Данный аккаунт заблокирован'})
-        elif isProfileDeleted(user_id):
+        elif isUserDeleted(user_id):
             return jsonify({'status': 0, 'message': 'Данный аккаунт удалён'})
 
         return setSession(user_id)
@@ -91,7 +98,7 @@ def resetPW_request():
         if ''.join(re.findall(r'^[0-9A-z-_]+@[0-9A-z-_]+.[0-9A-z]+$', email)) != email:
             return jsonify({'status': 0, 'message': 'Неправильный формат email\'а'})
 
-        sendConfirm(email)
+        sendConfirm(email, True)
         return jsonify({'status': 1})
 
 

@@ -37,7 +37,7 @@ def db_isAuthDataValid(data):
 
 
 def db_isProfileExists(data):
-    sql = "SELECT count(login) FROM auth"
+    sql="SELECT count(login) FROM auth"
 
     if type(data) == int:
         sql += " WHERE user_id='{:d}';".format(data)
@@ -47,6 +47,15 @@ def db_isProfileExists(data):
 
     users = sql_execute(sql, fetch_all=False)['count']
     return bool(users)
+
+
+def db_isEmailUsed(data):
+    sql='''
+        SELECT count(user_id) from auth where email='{email}'
+    '''.format(**data)
+    answer = sql_execute(sql, fetch_all=False)
+    print(bool(answer['count']))
+    return bool(answer['count'])
 
 
 def db_setLastVisit(ID):
