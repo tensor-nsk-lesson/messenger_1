@@ -7,42 +7,32 @@ CREATE TABLE "users" (
 	"is_blocked" BOOLEAN NOT NULL,
 	"is_online" BOOLEAN NOT NULL,
 	"is_deleted" BOOLEAN NOT NULL,
-	CONSTRAINT users_pk PRIMARY KEY ("id")
+	"is_confirmed" BOOLEAN NOT NULL,
+	CONSTRAINT "users_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "messages" (
-	"id" serial NOT NULL,
-	"dialog_id" integer NOT NULL,
-	"content" TEXT NOT NULL,
-	"created_at" TIMESTAMP NOT NULL,
-	"user_id" integer NOT NULL,
-	"section_id" integer NOT NULL,
-	CONSTRAINT messages_pk PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
-CREATE TABLE "dialogs" (
+CREATE TABLE "chat" (
 	"id" serial NOT NULL,
 	"name" TEXT,
 	"created_at" TIMESTAMP NOT NULL,
-	CONSTRAINT dialogs_pk PRIMARY KEY ("id")
+	"is_deleted" BOOLEAN NOT NULL,
+	CONSTRAINT "chat_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
 
 
 
-CREATE TABLE "dialogUser" (
-	"dialog_id" integer NOT NULL,
+CREATE TABLE "messages_users" (
+	"id" serial NOT NULL,
+	"chat_id" integer NOT NULL,
 	"user_id" integer NOT NULL,
-	"permission" integer DEFAULT NULL
+	"message_id" integer NOT NULL,
+	CONSTRAINT "messages_users_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -53,6 +43,7 @@ CREATE TABLE "auth" (
 	"user_id" integer NOT NULL,
 	"login" TEXT NOT NULL UNIQUE,
 	"password" TEXT NOT NULL,
+	"email" TEXT NOT NULL,
 	CONSTRAINT "auth_pk" PRIMARY KEY ("user_id")
 ) WITH (
   OIDS=FALSE
@@ -60,11 +51,38 @@ CREATE TABLE "auth" (
 
 
 
-CREATE TABLE "relationships" (
+CREATE TABLE "relationship" (
 	"id" serial NOT NULL,
 	"user_id" integer NOT NULL,
+	"user2_id" integer NOT NULL,
 	"status" integer,
-	CONSTRAINT relationships_pk PRIMARY KEY ("id")
+	CONSTRAINT "relationship_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "message" (
+	"id" serial NOT NULL,
+	"content" TEXT NOT NULL,
+	"created_at" TIMESTAMP NOT NULL,
+	"section_id" integer NOT NULL,
+	"is_edited" BOOLEAN NOT NULL,
+	"is_deleted" BOOLEAN NOT NULL,
+	CONSTRAINT "message_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "permissions_users" (
+	"id" serial NOT NULL,
+	"user_id" integer NOT NULL,
+	"chat_id" integer NOT NULL,
+	"permission" integer,
+	CONSTRAINT "permissions_users_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -72,13 +90,17 @@ CREATE TABLE "relationships" (
 
 
 
-ALTER TABLE "messages" ADD CONSTRAINT "messages_fk0" FOREIGN KEY ("dialog_id") REFERENCES "dialogs"("id");
-ALTER TABLE "messages" ADD CONSTRAINT "messages_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 
-ALTER TABLE "dialogUser" ADD CONSTRAINT "dialogUser_fk0" FOREIGN KEY ("dialog_id") REFERENCES "dialogs"("id");
-ALTER TABLE "dialogUser" ADD CONSTRAINT "dialogUser_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "messages_users" ADD CONSTRAINT "messages_users_fk0" FOREIGN KEY ("chat_id") REFERENCES "chat"("id");
+ALTER TABLE "messages_users" ADD CONSTRAINT "messages_users_fk1" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "messages_users" ADD CONSTRAINT "messages_users_fk2" FOREIGN KEY ("message_id") REFERENCES "message"("id");
 
-ALTER TABLE "authentications" ADD CONSTRAINT "authentications_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "auth" ADD CONSTRAINT "auth_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 
-ALTER TABLE "relationships" ADD CONSTRAINT "relationships_fk0" FOREIGN KEY ("id") REFERENCES "users"("id");
+ALTER TABLE "relationship" ADD CONSTRAINT "relationship_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "relationship" ADD CONSTRAINT "relationship_fk1" FOREIGN KEY ("user2_id") REFERENCES "users"("id");
+
+
+ALTER TABLE "permissions_users" ADD CONSTRAINT "permissions_users_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
+ALTER TABLE "permissions_users" ADD CONSTRAINT "permissions_users_fk1" FOREIGN KEY ("chat_id") REFERENCES "chat"("id");
 

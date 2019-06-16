@@ -1,64 +1,64 @@
-html, body{
-	width: 100%;
-	height: 100%;
-	padding: 0px;
-	margin: 0px;
-	overflow: hidden;
+body {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #d8d6df;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-body{
-	background-color: #d8d6df;
-	position: absolute;
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.header{
+  background: linear-gradient(to left, #6b5389 0%, #55426b 50%, #6b5389 100%);
+	display: inline-block;
+	width: 100%;
+	height: 46px;
+  padding: 0px;
 }
 *{
 	font-family: roboto;
 }
-.header{
-	background: linear-gradient(to left, #6b5389 0%, #55426b 50%, #6b5389 100%);
-	position: relative;
-	display: inline-block;
-	width: 100%;
-	height: 40px;
-	padding: 0px;
-}
-.name{
-	display: block;
-	height: 38px;
-	width: 40%;
-}
-H1{
+h1{
 	margin-left: 20px;
-	margin-top: 5px;
+	margin-top: 8px;
 	font-size: 25px;
 	color: #d8d6df;
 }
 a{
+  	padding: 0px;
 	color: #d8d6df;
 	display: block;
-	margin-top: -35px;
-	margin-left: 1250px;
+	border: 2px solid #6b5389;
+	padding: 3px;
+	margin-top: -48px;
+	margin-left: 94%;
 	width: 54px;
 	text-decoration: none;
 	font-size: 19px;
 }
 a:hover{
 	border: 2px solid #c7c5d3;
-	padding: 3px;
-	margin-top: -40px;
-	margin-left: 1245px;
 }
-a.auth{
-	margin-left: 1215px;
-	margin-top: -45px;
+a.signin{
+	margin-left: 90%;
 	width: 114px;
 }
-a.auth:hover{
-	margin-left: 1210px;
-	margin-top: -50px;
+a.droppass{
+	margin-left: 93%;
+	width: 68px;
 }
-H2{
+h2{
 	text-align: center;
 }
-.auth_form{
+.input_form{
 	margin-top: 4%;
 	margin-left: 38%;
 	border-top: 3px solid #6b5389;
@@ -105,7 +105,7 @@ body :-ms-input-placeholder{
 	padding-left: 10px;
 	font-weight: bold;
 }
-body button{
+button{
 	background-color: #56426e;
 	border: none;
 	border-radius: 9px;
@@ -113,34 +113,34 @@ body button{
 	width: 121px;
 	font-size: 17px;
 	color: #e6e4ef;
-	margin-top: 40px;
+	margin-top: 14px;
 	margin-left: 92px;
-	margin-bottom: 15px;
+	margin-bottom: 14px;
 	outline: none;
 }
 button:hover{
 	background-color: #6b5389;
 }
 footer{
-	margin-top: 53px;
-	height: 40px;
+  	margin-top: 69px;
+	height: 46px;
 	background-color: #bebcc4;
 }
-H3{
+footer.signin{
+	margin-top: 252px;
+}
+footer.droppass{
+	margin-top: 312px;
+}
+h3{
 	padding-top: 9px;
 	text-align: center;
 	color: #9695a0;
 	font-family: yi;
 }
-.sign_in_footer{
-	margin-top: 236px;
-}
-.drop_pass{
-	margin-top: 298px;
-}
 @font-face{
 	font-family: roboto;
-	src:url(fonts/Roboto-Regular.ttf) format('truetype')
+	src:url(./fonts/Roboto-Regular.ttf) format('truetype')
 }
 @font-face{
 	font-family: yi;
