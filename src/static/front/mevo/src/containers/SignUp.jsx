@@ -41,7 +41,7 @@ class SignUp extends React.Component {
         login: this.state.email,
         password: this.state.fpass
       }
-      this.props.onReg('/register', userData);
+      this.props.onReg('http://127.0.0.1:5000/register', userData);
       console.log(userData);
     }
     else {

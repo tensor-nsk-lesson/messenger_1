@@ -8,7 +8,7 @@ class SignUp extends React.Component {
     const inputs = [
         { id: 1, type: 'email', placeholder: 'Логин' },
         { id: 2, type: 'password', placeholder: 'Пароль' }
-      ]
+    ]
     return (
       <div>
         <Header class='signin' url='/signup' to='Регистрация' />
