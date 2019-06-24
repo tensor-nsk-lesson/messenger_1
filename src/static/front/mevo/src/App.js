@@ -1,14 +1,16 @@
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom'
 import { connect } from 'react-redux'
-import { personsFetchData } from './actions/persons'
+import { personsFetchData } from './actions/profile'
 import SignUp from './containers/SignUp';
 import SignIn from './containers/SignIn';
 import DropPass from './containers/DropPass';
 
 class  App extends React.Component {
 
-
+  componentDidMount() {
+    this.props.fetchData('http://127.0.0.1:5000/')
+  }
   render(){
     return(
       <BrowserRouter>

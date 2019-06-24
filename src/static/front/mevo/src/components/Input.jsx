@@ -1,7 +1,15 @@
 import React from 'react'
 
-export default function Input({ input }) {
-    return(
-        <input type={input.type} required placeholder={input.placeholder}></input>
-    )
+export default class Input extends React.Component {
+    render() {
+        return(
+                <input
+                    value = {this.props.value}
+                    type = {this.props.input.type} 
+                    required 
+                    placeholder = {this.props.input.placeholder}
+                    onChange = {this.props.input.on_change}
+                />
+        )
+    }
 }

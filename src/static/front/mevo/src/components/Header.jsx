@@ -12,7 +12,7 @@ class Header extends React.Component {
         return(
             <div className='header'>
                 <div className="name"><h1>MEVO</h1></div>
-			    <Navigations class={this.class} url={this.url} to = {this.to}></Navigations>
+			    <Navigations class={this.class} url={this.url} to = {this.to} />
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../components/Header'
-import Foter from '../components/Foter'
+import Foter from '../components/Footer'
 import InputsForm from '../components/InputsForm'
 
 class SignUp extends React.Component {
@@ -11,9 +11,9 @@ class SignUp extends React.Component {
       ]
     return (
       <div>
-        <Header class='signin' url='/signup' to='Регистрация'></Header>
-        <InputsForm name_form='Авторизация' inputs={inputs}></InputsForm>
-        <Foter class='signin'></Foter>
+        <Header class='signin' url='/signup' to='Регистрация' />
+        <InputsForm name_form='Авторизация' inputs={inputs} />
+        <Foter class='signin' />
       </div>
     )
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header'
-import Foter from '../components/Foter'
+import Foter from '../components/Footer'
 import InputsForm from '../components/InputsForm'
 
 class DropPass extends React.Component {
@@ -11,9 +11,9 @@ class DropPass extends React.Component {
     ]
     return (
       <div>
-        <Header class='droppass' url='/signup' to='Отмена'></Header>
-        <InputsForm name_form='Сброс пароля' inputs={inputs}></InputsForm>
-        <Foter class='droppass'></Foter>
+        <Header class='droppass' url='/signup' to='Отмена' />
+        <InputsForm name_form='Сброс пароля' inputs={inputs} />
+        <Foter class='droppass' />
       </div>
     )
   }
