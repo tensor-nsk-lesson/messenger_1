@@ -31,7 +31,7 @@ profile_update_schema = {
 }
 
 
-conference_create_schema = {
+chat_create_schema = {
     'type': 'object',
     'properties': {
         'name': {'type': 'string', 'pattern': '^[0-9A-zА-я-_\s][^\\r\\t\\n\\v\\f]+$'},
@@ -39,7 +39,7 @@ conference_create_schema = {
     'required': ['name']
 }
 
-conference_send_schema = {
+chat_send_msg_schema = {
     'type': 'object',
     'properties': {
         'name': {'type': 'string', 'pattern': '^[0-9A-z-_]+$'},

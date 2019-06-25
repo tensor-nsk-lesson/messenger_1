@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify, abort
-from profile_methods import db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
-from profile_methods import db_FullDelProfile, db_isProfileExists
-from modules.ProfileManager.api.functions import isProfileDeleted, isProfileBlocked
-from modules.json_validator import json_validate
+from modules.API.profile_methods import db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
+from modules.API.profile_methods import db_FullDelProfile, db_isProfileExists
+from modules.API.functions import isUserDeleted, isUserBlocked
+from modules.API.functions import json_validate
 from modules.json_schemas import profile_update_schema
 
 profile_module = Blueprint('profile', __name__)
@@ -23,20 +23,20 @@ def profile(ID):
             if data is None:
                 abort(400)
 
-            if isProfileDeleted(ID):
+            if isUserDeleted(ID):
                 return jsonify({'status': 0, 'message': 'Невозможно изменить данные удалённого аккаунта'})
 
-            if isProfileBlocked(ID):
+            if isUserBlocked(ID):
                 return jsonify({'status': 0, 'message': 'Невозможно изменить данные заблокированного аккаунта'})
 
             return jsonify(db_updateProfileInfo(ID, data))
 
         elif request.method == 'DELETE':
-            if isProfileDeleted(ID):
+            if isUserDeleted(ID):
                 return jsonify({'status': 0, 'message': 'Аккаунт уже удалён'})
 
-            #return db_delProfile(ID, status=True)
-            return jsonify(db_FullDelProfile(ID))
+            return jsonify(db_delProfile(ID))
+            #return jsonify(db_FullDelProfile(ID))
 
 
 @profile_module.route('/all')

@@ -1,0 +1,118 @@
+.header{
+    background: linear-gradient(to left, #6b5389 0%, #55426b 50%, #6b5389 100%);
+      display: inline-block;
+      width: 100%;
+      height: 46px;
+      padding: 0px;
+  }
+  *{
+      font-family: roboto;
+  }
+  h1{
+      margin-left: 20px;
+      margin-top: 8px;
+      font-size: 25px;
+      color: #d8d6df;
+  }
+  a{
+    padding: 0px;
+      color: #d8d6df;
+      display: block;
+      margin-top: -43px;
+      margin-left: 1300px;
+      width: 54px;
+      text-decoration: none;
+      font-size: 19px;
+  }
+  a:hover{
+      border: 2px solid #c7c5d3;
+      padding: 3px;
+      margin-top: -48px;
+      margin-left: 1295px;
+  }
+  h2{
+      text-align: center;
+  }
+  .input_form{
+      margin-top: 4%;
+      margin-left: 38%;
+      border-top: 3px solid #6b5389;
+      width: 325px;
+      background-color: #e6e4ef;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  }
+  form{
+      margin: 10px 10px 10px 10px;
+      padding-bottom: 10px;
+  }
+  input{
+      border-radius: 17px;
+      border: 1px solid black;
+      -webkit-border-radius: 17px;
+      -moz-border-radius: 17px;
+      -khtml-border-radius: 17px;
+      background-color: #efedf7;
+      margin-bottom: 10px;
+      margin-left: 30px;
+      height: 39px;
+      width: 230px;
+      padding: 5px;
+      color: black;
+      outline: none;
+  }
+  body ::-webkit-input-placeholder{
+      color: black;
+      padding-left: 10px;
+      font-weight: bold;
+  }
+  body ::-moz-placeholder{
+      color: black;
+      padding-left: 10px;
+      font-weight: bold;
+  }
+  body :-moz-placeholder{
+      color: black;
+      padding-left: 10px;
+      font-weight: bold;
+  }
+  body :-ms-input-placeholder{
+      color: black;
+      padding-left: 10px;
+      font-weight: bold;
+  }
+  button{
+      background-color: #56426e;
+      border: none;
+      border-radius: 9px;
+      height: 37px;
+      width: 121px;
+      font-size: 17px;
+      color: #e6e4ef;
+      margin-top: 14px;
+      margin-left: 92px;
+      margin-bottom: 14px;
+      outline: none;
+  }
+  button:hover{
+      background-color: #6b5389;
+  }
+  footer{
+    bottom: 0px;
+    margin-top: 67px;
+      height: 46px;
+      background-color: #bebcc4;
+  }
+  h3{
+      padding-top: 9px;
+      text-align: center;
+      color: #9695a0;
+      font-family: yi;
+  }
+  @font-face{
+      font-family: roboto;
+      src:url(../fonts/Roboto-Regular.ttf) format('truetype')
+  }
+  @font-face{
+      font-family: yi;
+      src:url(../fonts/msyi.ttf) format('truetype')
+  }

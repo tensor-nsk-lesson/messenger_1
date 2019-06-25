@@ -1,12 +1,13 @@
 from modules.API.profile_methods import db_getProfileInfo
 from modules.API.profile_methods import db_getUserIDbyEmail, db_setActive
 from modules.API.profile_methods import db_setLastVisit
-from src.app import app
+from messenger_1.src import app
 from flask import url_for
 from flask_mail import Mail, Message
 from flask import request
 from flask import make_response, redirect
 from random import randint
+import smtplib
 import time
 import jwt
 import redis
@@ -56,11 +57,11 @@ def deleteSession(session):
 # PROFILE
 #####################
 
-def isProfileBlocked(user_id):
+def isUserBlocked(user_id):
     return db_getProfileInfo(user_id)['is_blocked']
 
 
-def isProfileDeleted(user_id):
+def isUserDeleted(user_id):
     return db_getProfileInfo(user_id)['is_deleted']
 
 def isUserAuthorized():
@@ -72,22 +73,25 @@ def isUserAuthorized():
 # MAIL
 #####################
 
-def sendConfirm(email, reset=False):
+def sendConfirm(email, reset):
     mail = Mail(app)
     email_encoded = jwt.encode({'email': email, 'time': time.time()}, 'uzE7lSw8Ch7X4aB81E22Z6Nh', algorithm='HS256')
     msg = Message('Confirm Email', sender='mevomsngr@yandex.ru', recipients=[email])
 
     if reset:
         link = url_for('auth.resetPW', token=email_encoded, _external=True)
-        msg.body = 'Ссылка для сброса пароля: {}. Если вы не отправляли запрос на сброс пароля, то просто проигнорируйте это сообщение.'.format(link)
+        msg.body = 'Здравствуйте! Был получен запрос на сброс пароля. Нажмите на ссылку для сброса пароля:\n{}\n\nЕсли вы не отправляли запрос на сброс пароля, то просто проигнорируйте это сообщение.'.format(link)
     else:
         link = url_for('auth.confirmProfile', token=email_encoded, _external=True)
-        msg.body = 'Был создан пользователь в мессенджере MEVO. Чтобы подтвердить свой профиль, нажмите на ссылку. Если вы не отправляли запрос на сброс пароля, то просто проигнорируйте это сообщение.'.format(link)
+        msg.body = 'Здравствуйте! В мессенджере MEVO был создан пользователь и привязан к Вашей почте. Чтобы подтвердить свой профиль, нажмите на ссылку:\n{}\n\nЕсли вы не регистрировались, то просто проигнорируйте это сообщение.'.format(link)
         user_id = db_getUserIDbyEmail(email)
         db_setActive(user_id)
 
     print(link)
-    mail.send(msg)
+    try:
+        mail.send(msg)
+    except smtplib.SMTPDataError:
+        return {'status': 'Ошибка на сервере при попытке отправить сообщение'}
 
 
 
