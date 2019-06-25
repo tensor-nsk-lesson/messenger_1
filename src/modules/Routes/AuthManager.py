@@ -137,15 +137,19 @@ def confirmProfile(token):
         token_decoded = {}
         try:
             token_decoded.update(jwt.decode(token, 'uzE7lSw8Ch7X4aB81E22Z6Nh', algorithms=['HS256']))
+
+
+            if int(time.time() - token_decoded['time']) > 60*10:
+                return jsonify({'status': 0, 'message': 'Токен просрочен'})
+
+
+            user_id = db_getUserIDbyEmail(token_decoded)
+            if not user_id:
+                return jsonify({'status': 0, 'message': 'Пользователя с таким email не существует'})
+
+            db_setActive(user_id)
         except Exception as err:
             print(err)
+            abort(400)
 
-        if int(time.time() - token_decoded['time']) > 60*10:
-            return jsonify({'status': 0, 'message': 'Токен просрочен'})
-
-        user_id = db_getUserIDbyEmail(token_decoded)
-        if not user_id:
-            return jsonify({'status': 0, 'message': 'Пользователя с таким email не существует'})
-
-        db_setActive(user_id)
     return jsonify({'status': 1})
