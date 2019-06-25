@@ -1,7 +1,7 @@
 from modules.API.profile_methods import db_getProfileInfo
 from modules.API.profile_methods import db_getUserIDbyEmail, db_setActive
 from modules.API.profile_methods import db_setLastVisit
-from messenger_1.src import app
+from src.app import app
 from flask import url_for
 from flask_mail import Mail, Message
 from flask import request

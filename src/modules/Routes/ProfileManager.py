@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, abort
 from modules.API.profile_methods import db_getProfileInfo, db_getProfilesInfo, db_updateProfileInfo
-from modules.API.profile_methods import db_FullDelProfile, db_isProfileExists
+from modules.API.profile_methods import db_isProfileExists
 from modules.API.functions import isUserDeleted, isUserBlocked
 from modules.API.functions import json_validate
 from modules.json_schemas import profile_update_schema

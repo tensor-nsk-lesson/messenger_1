@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from modules.API.chat_methods import db_addChat, db_addMessageForChat, db_addUserInChat, db_getMessagesFromChat
+from modules.API.chat_methods import db_addChat, db_addUserInChat, db_getMessagesFromChat
 from modules.API.functions import json_validate, initRedis_db
 from modules.json_schemas import chat_create_schema
 from modules.API.functions import isUserAuthorized, isUserBlocked, isUserDeleted

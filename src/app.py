@@ -1,5 +1,4 @@
-from flask import Flask
-from messenger_1.src import app
+from . import app
 
 #  Mail Manager
 from modules.Routes.MailManager import mail_module
