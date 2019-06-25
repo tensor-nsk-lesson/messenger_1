@@ -6,13 +6,13 @@ import NameForm from './NameForm'
 export default function InputsForm(props) {
     return(
         <div className="input_form">
-            <NameForm name_form={props.name_form}></NameForm>
-			<form method="post">
+            <NameForm name_form={props.name_form} />
+			<form>
             	{ props.inputs.map( input=> {
-                    return <Input input={input} key={input.id}></Input>
+                    return <Input input={input} key={input.id} />
                 }) }
-                <Button></Button>
-          </form>
+                <Button url={props.url} />
+            </form>
 		</div>
     )
 }

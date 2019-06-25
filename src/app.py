@@ -1,7 +1,5 @@
 from flask import Flask
-
-app = Flask(__name__, static_url_path='')
-
+from messenger_1.src import app
 
 #  Mail Manager
 from modules.Routes.MailManager import mail_module

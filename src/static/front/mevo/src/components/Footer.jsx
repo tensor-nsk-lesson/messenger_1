@@ -1,10 +1,6 @@
 import React from 'react'
 
 class Foter extends React.Component {
-    constructor(props){
-        super(props);
-        this.class = props.class;
-    }
     render(){
         return(
             <footer className={this.class}>
